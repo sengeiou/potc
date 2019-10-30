@@ -1,0 +1,85 @@
+package com.poct.android.asks;
+
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.content.Context;
+import android.os.Handler;
+
+import com.poct.android.entity.TempGet;
+import com.poct.android.manager.BluetoothTaskManager;
+import com.poct.android.net.nettask.Bluetooth2Task;
+import com.poct.android.net.nettask.Bluetooth3Task;
+import com.poct.android.net.nettask.Bluetooth4Task;
+import com.poct.android.net.nettask.Bluetooth5Task;
+import com.poct.android.net.nettask.BluetoothTask;
+import com.poct.android.utils.AppUtils;
+import com.poct.android.utils.StringUtil;
+
+import java.util.ArrayList;
+
+public class TestReportAsks {
+
+
+    public static final int GET_REPORT_COUNT_SUCCESS = 10000;
+    public static final int GET_REPORT_COUNT_FAIL = 20000;
+    public static final int GET_REPORT_REPORT_SUCCESS = 10001;
+    public static final int GET_REPORT_REPORT_FAIL = 20001;
+
+
+    public static void getReportCount(Context context, Handler handler,String time) {
+        String commond = "MXW|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        BluetoothTask mBluetoothTask = new BluetoothTask(url, handler, GET_REPORT_COUNT_SUCCESS,GET_REPORT_COUNT_FAIL,context,"SXW",1,1);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+    }
+
+    public static void getReport(Context context, Handler handler,String time,int countend,int countbegin) {
+        String commond = "MZD|"+String.valueOf(countbegin)+"|"+String.valueOf(countend)+"|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        BluetoothTask mBluetoothTask = new BluetoothTask(url, handler, GET_REPORT_REPORT_SUCCESS,GET_REPORT_REPORT_FAIL,context,"SZD",countend,countbegin);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+    }
+
+    public static void getReport2(Context context, Handler handler, String time, int countend, int countbegin, TempGet tempGet) {
+        String commond = "MZD|"+String.valueOf(countbegin)+"|"+String.valueOf(countbegin)+"|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        Bluetooth2Task mBluetoothTask = new Bluetooth2Task(url, handler, GET_REPORT_REPORT_SUCCESS,GET_REPORT_REPORT_FAIL,context,"SZD",countend,countbegin,tempGet);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+    }
+
+
+    public static void getReport3(Context context, Handler handler, String time, int countend, int countbegin, ArrayList<TempGet> tempGet) {
+        String commond = "MZD|"+String.valueOf(countbegin)+"|"+String.valueOf(countend)+"|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        Bluetooth3Task mBluetoothTask = new Bluetooth3Task(url, handler, GET_REPORT_REPORT_SUCCESS,GET_REPORT_REPORT_FAIL,context,"SZD",countend,countbegin,tempGet,time);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+    }
+
+    public static String getReportUrl(String time,int countend, int countbegin) {
+        String commond = "MZD|"+String.valueOf(countbegin)+"|"+String.valueOf(countend)+"|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        return url;
+    }
+
+    public static void getReport6(Context context, Handler handler,String time,int countend,int countbegin) {
+        String commond = "MZD|"+String.valueOf(countbegin)+"|"+String.valueOf(countend)+"|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        BluetoothTask mBluetoothTask = new BluetoothTask(url, handler, GET_REPORT_REPORT_SUCCESS,GET_REPORT_REPORT_FAIL,context,"SZD",countend,countbegin);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+        BluetoothGattCharacteristic bluetoothGattCharacteristic = null;
+        bluetoothGattCharacteristic.getUuid().toString();
+    }
+
+    public static void getReportData(Context context, Handler handler,String time,ArrayList<TempGet> tempGets,int begin) {
+        String commond = "MXW|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        Bluetooth4Task mBluetoothTask = new Bluetooth4Task(url, handler, GET_REPORT_REPORT_SUCCESS,GET_REPORT_COUNT_FAIL,context,begin,tempGets,time);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+    }
+
+    public static void getReportData2(Context context, Handler handler,String time,ArrayList<TempGet> tempGets,int begin) {
+        String commond = "MXW|"+AppUtils.measureAskTime(time)+"|";
+        String url ="0B " + StringUtil.str2HexStr(commond) + " "+"1C 0D";
+        Bluetooth5Task mBluetoothTask = new Bluetooth5Task(url, handler, GET_REPORT_REPORT_SUCCESS,GET_REPORT_COUNT_FAIL,context,begin,tempGets,time);
+        BluetoothTaskManager.getInstance().addNetTask(mBluetoothTask);
+    }
+}

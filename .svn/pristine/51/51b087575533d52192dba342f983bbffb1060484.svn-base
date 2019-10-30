@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/teb_head_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/textclolr_title_blcak"
+            android:textSize="16dp"
+            android:text="@string/setting_title_time_head"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_auto"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/head"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_height="60dp">
+
+        <RelativeLayout
+            android:id="@+id/layername_auto"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_swich_auto"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/txtname_auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text="@string/setting_title_time_auto"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="16dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layerstate_auto"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btn_swich_auto"
+            android:layout_below="@+id/layername_auto">
+            <TextView
+                android:id="@+id/txtstate_auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text="@string/setting_title_time_auto_hit"
+                android:textColor="@color/textclolr_title_hit2"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <Switch
+            android:id="@+id/btn_swich_auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:switchMinWidth="20dp"
+            android:textOn=""
+            android:textOff=""
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_dete"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/btn_auto"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_height="60dp">
+
+        <RelativeLayout
+            android:id="@+id/layername_dete"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/txtname_dete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text="@string/setting_title_set_dete"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="16dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layerstate_dete"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layername_dete">
+            <TextView
+                android:id="@+id/txtstate_dete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text=""
+                android:textColor="@color/textclolr_title_hit2"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_time"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/btn_dete"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_height="60dp">
+
+        <RelativeLayout
+            android:id="@+id/layername_time"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:id="@+id/txtname_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text="@string/setting_title_set_time"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="16dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layerstate_time"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layername_time">
+            <TextView
+                android:id="@+id/txtstate_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:text=""
+                android:textColor="@color/textclolr_title_hit2"
+                android:textSize="13dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_24h"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/btn_time"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/txtname_24h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/setting_title_24hour"
+            android:textColor="@color/textclolr_title_gray"
+            android:textSize="16dp" />
+
+        <Switch
+            android:id="@+id/btn_swich_24h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:switchMinWidth="20dp"
+            android:textOn=""
+            android:textOff=""
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,191 @@
+package com.poct.android.presenter;
+
+import android.content.Intent;
+import android.widget.DatePicker;
+import android.widget.TextView;
+
+import com.poct.R;
+import com.poct.android.asks.ReportAsks;
+import com.poct.android.entity.SeriesReport;
+import com.poct.android.handler.ReportCenterHandler;
+import com.poct.android.utils.AppUtils;
+import com.poct.android.utils.DoubleDatePickerDialog;
+import com.poct.android.utils.ViewUtils;
+import com.poct.android.view.activity.ReportCenterActivity;
+import com.poct.android.view.activity.ReportPrintActivity;
+import com.poct.android.view.adapter.ApproveSeriasReportAdapter;
+
+/**
+ * Created by xpx on 2017/8/18.
+ */
+
+public class ReportCenterPresenter implements Presenter {
+
+    public ReportCenterHandler mReportCenterHandler;
+    public ReportCenterActivity mReportCenterActivity;
+    public ReportCenterPresenter(ReportCenterActivity mReportCenterActivity)
+    {
+        this.mReportCenterActivity = mReportCenterActivity;
+        this.mReportCenterHandler = new ReportCenterHandler(mReportCenterActivity);
+    }
+
+    @Override
+    public void Create() {
+        initView();
+    }
+
+    @Override
+    public void initView() {
+        mReportCenterActivity.setContentView(R.layout.activity_reportcenter);
+        mReportCenterActivity.btnBack = mReportCenterActivity.findViewById(R.id.layerback);
+        mReportCenterActivity.btnSearch = mReportCenterActivity.findViewById(R.id.btnsearch);
+        mReportCenterActivity.btnReset = mReportCenterActivity.findViewById(R.id.btnreset);
+        mReportCenterActivity.etxtName = mReportCenterActivity.findViewById(R.id.etxtname);
+        mReportCenterActivity.btnDete1 = mReportCenterActivity.findViewById(R.id.layerbegin);
+        mReportCenterActivity.btnDete2 = mReportCenterActivity.findViewById(R.id.layerend);
+        mReportCenterActivity.etxtSender = mReportCenterActivity.findViewById(R.id.etxtdoctor);
+        mReportCenterActivity.etxtDete1 = mReportCenterActivity.findViewById(R.id.etxtbegin);
+        mReportCenterActivity.etxtDete2 = mReportCenterActivity.findViewById(R.id.etxtend);
+        mReportCenterActivity.listReport = mReportCenterActivity.findViewById(R.id.reportlist);
+        mReportCenterActivity.etxtDete1.setText(AppUtils.getDate());
+        mReportCenterActivity.etxtDete2.setText(AppUtils.getDate());
+        mReportCenterActivity.txtImf = mReportCenterActivity.findViewById(R.id.txtimf);
+        mReportCenterActivity.btnBegin = mReportCenterActivity.findViewById(R.id.btnbegin);
+        mReportCenterActivity.btnEnd = mReportCenterActivity.findViewById(R.id.btnend);
+        mReportCenterActivity.btnPre = mReportCenterActivity.findViewById(R.id.btnpre);
+        mReportCenterActivity.btnNext = mReportCenterActivity.findViewById(R.id.btnnext);
+        doSearch();
+        mReportCenterActivity.mSeriasReportAdapter = new ApproveSeriasReportAdapter(mReportCenterActivity,mReportCenterActivity.mSeriesReports,mReportCenterHandler);
+        mReportCenterActivity.listReport.setAdapter(mReportCenterActivity.mSeriasReportAdapter);
+        mReportCenterActivity.btnBack.setOnClickListener(mReportCenterActivity.doBacklistener);
+        mReportCenterActivity.btnSearch.setOnClickListener(mReportCenterActivity.doSearchlistener);
+        mReportCenterActivity.btnReset.setOnClickListener(mReportCenterActivity.doResetlistener);
+        mReportCenterActivity.btnBegin.setOnClickListener(mReportCenterActivity.doBeginListener);
+        mReportCenterActivity.btnEnd.setOnClickListener(mReportCenterActivity.doEndListener);
+        mReportCenterActivity.btnPre.setOnClickListener(mReportCenterActivity.doPreListener);
+        mReportCenterActivity.btnNext.setOnClickListener(mReportCenterActivity.doNextListener);
+        mReportCenterActivity.btnDete1.setOnClickListener(mReportCenterActivity.doSetDeteBeginlistener);
+        mReportCenterActivity.btnDete2.setOnClickListener(mReportCenterActivity.doSetDeteEndlistener);
+        mReportCenterActivity.listReport.setOnItemClickListener(mReportCenterActivity.onPrintClickListener);
+    }
+
+    @Override
+    public void Start() {
+
+    }
+
+    @Override
+    public void Resume() {
+
+    }
+
+    @Override
+    public void Pause() {
+
+    }
+
+    @Override
+    public void Destroy() {
+
+    }
+
+
+    public void setEndImf() {
+        String imgf = mReportCenterActivity.getString(R.string.imf_word_now)+String.valueOf(mReportCenterActivity.mPageSeraisReport.showPage)+mReportCenterActivity.getString(R.string.imf_word_page)
+                +","+mReportCenterActivity.getString(R.string.imf_word_all)+String.valueOf(mReportCenterActivity.mPageSeraisReport.pageCount)+mReportCenterActivity.getString(R.string.imf_word_page)
+                +","+mReportCenterActivity.getString(R.string.imf_word_every)+String.valueOf(mReportCenterActivity.mPageSeraisReport.pageMax)+mReportCenterActivity.getString(R.string.imf_word_one)
+                +","+mReportCenterActivity.getString(R.string.imf_word_all)+String.valueOf(mReportCenterActivity.mPageSeraisReport.totalcount)+mReportCenterActivity.getString(R.string.imf_word_one)
+                +mReportCenterActivity.getString(R.string.imf_word_data);
+        mReportCenterActivity.txtImf.setText(imgf);
+    }
+
+    public void doSearch() {
+        mReportCenterActivity.waitDialog.show();
+        ReportAsks.getReports(mReportCenterActivity.etxtDete1.getText().toString(),mReportCenterActivity.etxtDete2.getText().toString(),mReportCenterHandler,mReportCenterActivity);
+    }
+
+    public void doReset() {
+        mReportCenterActivity.etxtName.setText("");
+        mReportCenterActivity.etxtSender.setText("");
+        mReportCenterActivity.etxtDete1.setText(AppUtils.getDate());
+        mReportCenterActivity.etxtDete2.setText(AppUtils.getDate());
+    }
+
+    public void doBegin() {
+        mReportCenterActivity.mSeriesReports.clear();
+        mReportCenterActivity.mPageSeraisReport.setBegin();
+        mReportCenterActivity.mSeriesReports.addAll(mReportCenterActivity.mPageSeraisReport.getShow());
+        mReportCenterActivity.mSeriasReportAdapter.notifyDataSetChanged();
+        setEndImf();
+    }
+
+    public void doEnd() {
+        mReportCenterActivity.mSeriesReports.clear();
+        mReportCenterActivity.mPageSeraisReport.setEnd();
+        mReportCenterActivity.mSeriesReports.addAll(mReportCenterActivity.mPageSeraisReport.getShow());
+        mReportCenterActivity.mSeriasReportAdapter.notifyDataSetChanged();
+        setEndImf();
+    }
+
+    public void doNext() {
+        if(mReportCenterActivity.mPageSeraisReport.setNext())
+        {
+            mReportCenterActivity.mSeriesReports.clear();
+            mReportCenterActivity.mSeriesReports.addAll(mReportCenterActivity.mPageSeraisReport.getShow());
+            mReportCenterActivity.mSeriasReportAdapter.notifyDataSetChanged();
+            setEndImf();
+        }
+        else
+        {
+            ViewUtils.showMessage(mReportCenterActivity,mReportCenterActivity.getString(R.string.imf_word_error_end));
+        }
+    }
+
+    public void doPre() {
+        if(mReportCenterActivity.mPageSeraisReport.setPre())
+        {
+            mReportCenterActivity.mSeriesReports.clear();
+            mReportCenterActivity.mSeriesReports.addAll(mReportCenterActivity.mPageSeraisReport.getShow());
+            mReportCenterActivity.mSeriasReportAdapter.notifyDataSetChanged();
+            setEndImf();
+        }
+        else
+        {
+            ViewUtils.showMessage(mReportCenterActivity,mReportCenterActivity.getString(R.string.imf_word_error_begin));
+        }
+    }
+
+    public void setDateBegin() {
+        ViewUtils.creatDataPicker(mReportCenterActivity,mReportCenterActivity.etxtDete1.getText().toString()
+                , mReportCenterActivity.getString(R.string.setting_dete_start),new DataPickerListener(mReportCenterActivity.etxtDete1));
+    }
+
+    public void setDateEnd() {
+        ViewUtils.creatDataPicker(mReportCenterActivity,mReportCenterActivity.etxtDete1.getText().toString()
+                , mReportCenterActivity.getString(R.string.setting_dete_end),new DataPickerListener(mReportCenterActivity.etxtDete2));
+    }
+
+    class DataPickerListener implements DoubleDatePickerDialog.OnDateSetListener {
+
+        public TextView textView;
+
+        public DataPickerListener(TextView textView) {
+            this.textView = textView;
+        }
+
+        @Override
+        public void onDateSet(DatePicker startDatePicker, int startYear, int startMonthOfYear, int startDayOfMonth, int hour, int miniute) {
+            if (textView != null) {
+                textView.setText(String.format("%04d-%02d-%02d", startYear, startMonthOfYear+1, startDayOfMonth));
+            }
+
+        }
+    }
+
+    public void startPrint(SeriesReport seriesReport) {
+        Intent intent = new Intent(mReportCenterActivity, ReportPrintActivity.class);
+        intent.putExtra("report",seriesReport);
+//        intent.putExtra(EquipMentManager.REPORT_ID, DataPrase.praseReportJson(seriesReport));
+        mReportCenterActivity.startActivity(intent);
+    }
+}

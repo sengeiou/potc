@@ -1,0 +1,366 @@
+package com.poct.android.manager;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
+import com.poct.android.entity.WifiBean;
+import com.poct.android.view.PoctApplication;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class WifiSetManager {
+    public static final String WIFI_STATE_CONNECT = "已连接";
+    public static final String WIFI_STATE_ON_CONNECTING = "正在连接";
+    public static final String WIFI_STATE_UNCONNECT = "未连接";
+    public static final int SECURITY_NONE = 0;
+    public static final int SECURITY_WEP = 1;
+    public static final int SECURITY_PSK_WPA = 2; // WPA、WPA2、WPA_WPA2
+    public static final int SECURITY_EAP = 3;
+    public WifiBean mWifiBeanConnect;
+    public WifiManager mainWifi;
+    public boolean wifi5Gsupport;
+    //扫描出的网络连接列表
+    public ArrayList<WifiBean>  wifiList = new ArrayList<WifiBean>();
+    //扫描完毕接收器
+    public static WifiSetManager mWifiSetManager;
+
+    public WifiSetManager() {
+        mainWifi = (WifiManager) PoctApplication.mApp.getSystemService(Context.WIFI_SERVICE);
+        if(mainWifi.isWifiEnabled())
+        {
+            wifi5Gsupport = mainWifi.is5GHzBandSupported();
+            sortScaResult();
+        }
+        else
+        {
+
+        }
+    }
+
+    public static synchronized WifiSetManager getInstance() {
+        if (mWifiSetManager == null) {
+            mWifiSetManager = new WifiSetManager();
+        }
+        return mWifiSetManager;
+    }
+
+
+    /**
+     * 扫描wifi,加载进度条
+     */
+    public void scanWifi() {
+        openWifi();
+        mainWifi.startScan();
+    }
+
+
+    /**
+     * 打开wifi
+     */
+    public void openWifi() {
+        if (!mainWifi.isWifiEnabled()) {
+            mainWifi.setWifiEnabled(true);
+        }
+    }
+
+    /**
+     * 关闭wifi
+     */
+    public void closeWifi() {
+        if (mainWifi.isWifiEnabled()) {
+            mainWifi.setWifiEnabled(false);
+        }
+
+    }
+
+    public void sortScaResult(){
+        List<ScanResult> scanResults = mainWifi.getScanResults();
+        ArrayList<WifiConfiguration> existingConfigs = new ArrayList<WifiConfiguration>();
+        existingConfigs.addAll(mainWifi.getConfiguredNetworks());
+        wifiList.clear();
+        WifiInfo mWifiInfo = null;
+        if(isWifiConnect())
+        {
+            mWifiInfo = mainWifi.getConnectionInfo();
+        }
+        for(int i = 0;i < scanResults.size();i++){
+
+            if(scanResults.get(i).SSID.length() > 0)
+            {
+                WifiBean wifiBean = new WifiBean();
+
+                wifiBean.wifiName = scanResults.get(i).SSID;
+                wifiBean.address = scanResults.get(i).BSSID;
+                if(checkWifi(wifiBean))
+                {
+                    continue;
+                }
+                wifiBean.state = WifiSetManager.WIFI_STATE_UNCONNECT;   //只要获取都假设设置成未连接，真正的状态都通过广播来确定
+                for(int j = 0 ; j <existingConfigs.size(); j++)
+                {
+                    String a = "\""+wifiBean.wifiName+"\"";
+                    String b = existingConfigs.get(j).SSID;
+                    if(("\""+wifiBean.wifiName+"\"").equals(existingConfigs.get(j).SSID)) {
+                        wifiBean.saved = true;
+                        wifiBean.mWifiConfiguration = existingConfigs.get(j);
+                        existingConfigs.remove(j);
+                        break;
+                    }
+                }
+                if(mWifiInfo != null)
+                {
+                    if(mWifiInfo.getBSSID().equals(wifiBean.address))
+                    {
+                        wifiBean.state = WifiSetManager.WIFI_STATE_CONNECT;
+                        mWifiBeanConnect = wifiBean;
+                    }
+                }
+                else if(mWifiBeanConnect != null)
+                {
+                    if(mWifiBeanConnect.address.equals(wifiBean.address))
+                    {
+                        wifiBean.state = mWifiBeanConnect.state;
+                        mWifiBeanConnect = wifiBean;
+                    }
+                }
+
+                wifiBean.capabilities = scanResults.get(i).capabilities;
+                wifiBean.type = getSecurity(wifiBean);
+                wifiBean.level = String.valueOf(scanResults.get(i).level);
+                wifiList.add(wifiBean);
+                Collections.sort(wifiList);
+            }
+        }
+        if(mWifiBeanConnect != null)
+        {
+            wifiList.remove(mWifiBeanConnect);
+            wifiList.add(0,mWifiBeanConnect);
+        }
+        if(mWifiBeanConnect == null)
+        autoConnect();
+    }
+
+    public void autoConnect()
+    {
+        for(int i = 0 ; i < wifiList.size() ; i++)
+        {
+            if(wifiList.get(i).saved)
+            {
+                mWifiBeanConnect = wifiList.get(i);
+                connectNetWork(mWifiBeanConnect,"");
+                break;
+            }
+        }
+    }
+
+
+    public boolean isWifiConnect() {
+        ConnectivityManager connManager = (ConnectivityManager) PoctApplication.mApp.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return mWifiInfo.isConnected();
+    }
+
+    public void connectNetWork(WifiBean mWifiBean,String password)
+    {
+        if(mWifiBean.saved)
+        {
+            if(mWifiBeanConnect != null)
+            {
+                if(mWifiBeanConnect.state == WifiSetManager.WIFI_STATE_CONNECT)
+                {
+                    if(mWifiBeanConnect.mWifiConfiguration.networkId != -1)
+                    mainWifi.disableNetwork(mWifiBeanConnect.mWifiConfiguration.networkId);
+                }
+            }
+            mWifiBean.state = WifiSetManager.WIFI_STATE_ON_CONNECTING;
+            mainWifi.enableNetwork(mWifiBean.mWifiConfiguration.networkId,true);
+        }
+        else
+        {
+            if(mWifiBeanConnect != null)
+            {
+                if(mWifiBeanConnect.state == WifiSetManager.WIFI_STATE_CONNECT)
+                {
+                    mainWifi.disableNetwork(mWifiBeanConnect.mWifiConfiguration.networkId);
+                }
+            }
+
+            mWifiBean.mWifiConfiguration = CreateWifiInfo(mWifiBean,password);
+            int id = mainWifi.addNetwork(mWifiBean.mWifiConfiguration);
+            if(id != -1)
+            {
+                mWifiBean.state = WifiSetManager.WIFI_STATE_ON_CONNECTING;
+                mainWifi.enableNetwork(id,true);
+            }
+            else
+            {
+                mWifiBean.state = WifiSetManager.WIFI_STATE_UNCONNECT;
+            }
+        }
+
+
+        if(mWifiBeanConnect != null)
+        {
+            mWifiBeanConnect.state = WIFI_STATE_UNCONNECT;
+            mWifiBeanConnect = mWifiBean;
+        }
+        mWifiBeanConnect = mWifiBean;
+        wifiList.remove(mWifiBeanConnect);
+        wifiList.add(0,mWifiBeanConnect);
+    }
+
+    public void removeNetwork(WifiBean mWifiBean)
+    {
+
+        mainWifi.removeNetwork(mWifiBean.mWifiConfiguration.networkId);
+        mWifiBean.saved = false;
+    }
+
+    public void disConnectNetwork(WifiBean mWifiBean)
+    {
+        mainWifi.disableNetwork(mWifiBean.mWifiConfiguration.networkId);
+    }
+
+    public static int getSecurity(WifiBean mWifiBean) {
+        if (mWifiBean.capabilities.contains("WEP")) {
+            return SECURITY_WEP;
+        } else if (mWifiBean.capabilities.contains("PSK") || mWifiBean.capabilities.contains("WPA")) {
+            return SECURITY_PSK_WPA;
+        } else if (mWifiBean.capabilities.contains("EAP")) {
+            return SECURITY_EAP;
+        }
+        return SECURITY_NONE;
+    }
+
+    public WifiConfiguration CreateWifiInfo(WifiBean mWifiBean, String Password) {//
+//        WifiConfiguration config = new WifiConfiguration();
+//        config.allowedAuthAlgorithms.clear();
+//        config.allowedGroupCiphers.clear();
+//        config.allowedKeyManagement.clear();
+//        config.allowedPairwiseCiphers.clear();
+//        config.allowedProtocols.clear();
+//        config.SSID = "\"" + mWifiBean.wifiName + "\"";
+//        config.hiddenSSID = false;
+//        if (mWifiBean.type == SECURITY_NONE) {
+//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+//        }
+//        if (mWifiBean.type == SECURITY_WEP) {
+//            config.hiddenSSID = true;
+//            config.wepKeys[0] = "\"" + Password + "\"";
+//            config.allowedAuthAlgorithms
+//                    .set(WifiConfiguration.AuthAlgorithm.SHARED);
+//            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+//            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+//            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+//            config.allowedGroupCiphers
+//                    .set(WifiConfiguration.GroupCipher.WEP104);
+//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+//            config.wepTxKeyIndex = 0;
+//
+//        }
+//        if (mWifiBean.type == SECURITY_PSK_WPA) {
+//            config.preSharedKey = "\"" + Password + "\"";
+//            config.hiddenSSID = true;
+//            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+//            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+//            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+//            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+//            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+//            config.status = WifiConfiguration.Status.ENABLED;
+//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+//            if (Password.length() != 0) {
+//                if (Password.matches("[0-9A-Fa-f]{8,}")) {
+//                    config.preSharedKey = Password;
+//                } else {
+//                    config.preSharedKey = '"' + Password + '"';
+//                }
+//            }
+//        }
+//        if (mWifiBean.type == SECURITY_EAP) {
+//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
+//            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X);
+//        }
+
+
+
+
+        WifiConfiguration config = null;
+        WifiManager mWifiManager = (WifiManager) PoctApplication.mApp.getSystemService(Context.WIFI_SERVICE);
+        if (mWifiManager != null) {
+            List<WifiConfiguration> existingConfigs = mWifiManager.getConfiguredNetworks();
+            for (WifiConfiguration existingConfig : existingConfigs) {
+                if (existingConfig == null) continue;
+                if (existingConfig.SSID.equals("\"" + mWifiBean.wifiName + "\"")  /*&&  existingConfig.preSharedKey.equals("\""  +  password  +  "\"")*/) {
+                    config = existingConfig;
+                    break;
+                }
+            }
+        }
+
+        if (config == null) {
+            config = new WifiConfiguration();
+        }
+        config.allowedAuthAlgorithms.clear();
+        config.allowedGroupCiphers.clear();
+        config.allowedKeyManagement.clear();
+        config.allowedPairwiseCiphers.clear();
+        config.allowedProtocols.clear();
+        config.SSID = "\"" + mWifiBean.wifiName + "\"";
+        // 分为三种情况：0没有密码1用wep加密2用wpa加密
+        if (mWifiBean.type == SECURITY_NONE) {// WIFICIPHER_NOPASSwifiCong.hiddenSSID = false;
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        } else if (mWifiBean.type == SECURITY_WEP) {  //  WIFICIPHER_WEP
+            config.hiddenSSID = true;
+            config.wepKeys[0] = "\"" + Password + "\"";
+            config.allowedAuthAlgorithms
+                    .set(WifiConfiguration.AuthAlgorithm.SHARED);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+            config.allowedGroupCiphers
+                    .set(WifiConfiguration.GroupCipher.WEP104);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            config.wepTxKeyIndex = 0;
+        } else if (mWifiBean.type == SECURITY_PSK_WPA) {   // WIFICIPHER_WPA
+            config.preSharedKey = "\"" + Password + "\"";
+            config.hiddenSSID = true;
+            config.allowedAuthAlgorithms
+                    .set(WifiConfiguration.AuthAlgorithm.OPEN);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            config.allowedPairwiseCiphers
+                    .set(WifiConfiguration.PairwiseCipher.TKIP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedPairwiseCiphers
+                    .set(WifiConfiguration.PairwiseCipher.CCMP);
+            config.status = WifiConfiguration.Status.ENABLED;
+        }
+        else if (mWifiBean.type == SECURITY_EAP) {
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.IEEE8021X);
+        }
+
+        return config;
+    }
+
+    public boolean checkWifi(WifiBean wifiBean)
+    {
+        boolean has = false;
+        for(int i = 0 ; i < wifiList.size() ; i++)
+        {
+            if(wifiBean.wifiName.equals(wifiList.get(i).wifiName))
+            {
+                has = true;
+            }
+        }
+        return has;
+    }
+}

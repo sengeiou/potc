@@ -1,0 +1,441 @@
+<resources>
+    <string name="app_name">一米云检</string>
+
+    <string name="keyword_version">版本号</string>
+    <string name="keyword_updata">更新</string>
+    <string name="keyword_updata_later">稍后</string>
+    <string name="keyword_newversion">已经准备好更新</string>
+
+    <string name="error_net_network">网络连接错误</string>
+
+    <string name="imf_loading">正在加载...</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+
+    <string name="sex_male">男</string>
+    <string name="sex_female">女</string>
+    <string name="sex_unknowfemale">未知</string>
+
+
+    <string name="activity_title_login">登录</string>
+    <string name="activity_title_servicelist">服务器列表</string>
+    <string name="activity_title_servicesetting">服务器配置</string>
+    <string name="activity_gride_attachment">附件列表</string>
+
+    <string name="login_title_service">服务器</string>
+    <string name="login_title_user">用户名</string>
+    <string name="login_title_password">密　码</string>
+    <string name="login_title_dologin">登录</string>
+
+    <string name="servicelist_head_name">名称</string>
+    <string name="servicelist_head_address">IP地址</string>
+    <string name="servicelist_head_port">端口</string>
+    <string name="servicelist_add">添加</string>
+    <string name="servicelist_deleteservice">删除服务器？</string>
+
+
+    <string name="servicesetting_name">名　称:</string>
+    <string name="servicesetting_pattern">模　式:</string>
+    <string name="servicesetting_address">IP地址:</string>
+    <string name="servicesetting_port">端　口:</string>
+    <string name="servicesetting_ip">IP</string>
+    <string name="servicesetting_agent">代理远程</string>
+
+    <string name="main_conversation">会话</string>
+    <string name="main_word">工作</string>
+    <string name="main_my">我</string>
+    <string name="main_contact">通讯录</string>
+    <string name="main_org">组织结构</string>
+
+    <string name="album_title">选择相册</string>
+    <string name="album_photoaddmax1">最多只能选择</string>
+    <string name="album_photoaddmax2">张图片</string>
+
+
+
+    <string name="contacts_phone">手机通讯录</string>
+    <string name="contacts_sendtoself">不能给自己发消息</string>
+
+    <string name="promiss_error_autio">无法使用语音功能,请检查相关权限</string>
+    <string name="promiss_error_camera">无法使用拍照功能,请检查相关权限</string>
+
+    <string name="error_msg_ip">没有获取到ip地址</string>
+    <string name="error_msg_port">端口输入有误</string>
+    <string name="error_connect_sercive_fail">连接服务器失败</string>
+
+    <string name="gialog_word_tip">提示</string>
+
+
+    <string name="file_save_success">收藏成功</string>
+    <string name="file_save_exitst">你已经收藏过该文件</string>
+
+    <string name="button_word_ok">确定</string>
+    <string name="button_word_cancle">取消</string>
+    <string name="button_word_takephoto">拍照</string>
+    <string name="button_word_album">相册</string>
+    <string name="button_word_privew">预览</string>
+    <string name="button_word_upload">上传</string>
+    <string name="button_word_finish">完成</string>
+    <string name="button_word_orige">原图</string>
+    <string name="button_word_save">保存</string>
+    <string name="button_title_uploadposition">上传位置</string>
+    <string name="button_word_document">我的文档</string>
+    <string name="button_word_taskBack">回退</string>
+    <string name="button_word_summit">提交</string>
+    <string name="button_word_accept">同意</string>
+    <string name="button_word_veto">否决</string>
+    <string name="button_saveok">确定保存</string>
+    <string name="button_yes">是</string>
+    <string name="button_no">否</string>
+    <string name="button_saveandnew">保存并新建</string>
+    <string name="button_new">新建</string>
+    <string name="button_search">查询</string>
+    <string name="button_get">获取数据</string>
+    <string name="button_okto">确认分配</string>
+    <string name="button_getdata">点击获取</string>
+    <string name="button_detial">查看</string>
+    <string name="button_more">更多</string>
+    <string name="button_add">添加</string>
+    <string name="button_change">修改</string>
+    <string name="button_edit">编辑</string>
+    <string name="button_change_1">修改检测报告</string>
+    <string name="button_change_2">修改基本信息</string>
+    <string name="button_change_3">修改待获取样本号</string>
+    <string name="button_delete">删除</string>
+    <string name="button_reset">重置</string>
+    <string name="button_end">尾页</string>
+    <string name="button_nxt">下一页</string>
+    <string name="button_pre">上一页</string>
+    <string name="button_begin">首页</string>
+    <string name="button_print">打印</string>
+    <string name="button_still_print">继续打印</string>
+    <string name="button_checkprint">查看打印页面</string>
+
+    <string name="message_noInfoFind">没有查找到与此相关的信息</string>
+
+    <string name="menu_copy">复制</string>
+    <string name="menu_send">发送给朋友</string>
+    <string name="menu_save">收藏</string>
+    <string name="menu_save_success">收藏成功</string>
+    <string name="menu_save_exitst">你已经收藏过该文件</string>
+    <string name="menu_more">更多</string>
+    <string name="menu_attchment">附件</string>
+    <string name="menu_edit">编辑</string>
+    <string name="menu_delete">删除</string>
+    <string name="menu_new">新建</string>
+    <string name="menu_baidu">百度</string>
+    <string name="menu_gaode">高德</string>
+    <string name="menu_download">下载</string>
+    <string name="menu_shiyongyixia">  使用以下方式找到路线  </string>
+
+    <string name="conversation_approve_type_no">该审批不存在或已经被删除</string>
+
+    <string name="boolean_true">是</string>
+    <string name="boolean_false">否</string>
+
+    <string name="week_mon_head">周一</string>
+    <string name="week_tue_head">周二</string>
+    <string name="week_wen_head">周三</string>
+    <string name="week_ths_head">周四</string>
+    <string name="week_fri_head">周五</string>
+    <string name="week_sat_head">周六</string>
+    <string name="week_sun_head">周日</string>
+
+    <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
+    <string name="pull_to_refresh_footer_release_label">松开后加载</string>
+    <string name="pull_to_refresh_footer_refreshing_label">正在加载中\u2026</string>
+    <string name="pull_to_refresh_pull_label">上拉刷新</string>
+    <string name="pull_to_refresh_release_label">上拉刷新</string>
+    <string name="pull_to_refresh_refreshing_label">上拉刷新</string>
+
+    <string name="title_task">任务</string>
+    <string name="title_mail">邮件</string>
+    <string name="title_document">文档</string>
+    <string name="title_time">时间</string>
+    <string name="title_remind">提醒</string>
+    <string name="title_tip">提示</string>
+    <string name="title_empty">不能为空</string>
+    <string name="title_forgavesave">是否放弃保存</string>
+    <string name="title_approvedonot">否决</string>
+
+
+    <string name="hit_approvedonot">请填写您否决的原因!</string>
+
+
+    <string name="function_businessWarn">业务示警</string>
+    <string name="function_taskExamine">任务审批</string>
+    <string name="function_system">公告</string>
+    <string name="function_task">任务管理</string>
+    <string name="function_workreport">工作汇报</string>
+    <string name="function_sign">签到</string>
+    <string name="function_leave">请假</string>
+    <string name="function_schedule">日程</string>
+    <string name="function_attdence">考勤</string>
+    <string name="function_systemmesage">公告</string>
+    <string name="function_vote">投票</string>
+    <string name="function_circle">工作圈</string>
+    <string name="function_newmail">新建邮件</string>
+    <string name="function_businesscard">名片导入</string>
+    <string name="function_newtask">新建任务</string>
+    <string name="function_newproject">新建项目</string>
+    <string name="function_leave_n">新建请假</string>
+    <string name="function_date_n">新建日程</string>
+    <string name="function_systemmesage_n">新建公告</string>
+    <string name="function_vote_n">新建投票</string>
+    <string name="function_task_title">任务</string>
+
+
+    <string name="schdule_new">新建日程</string>
+    <string name="schdule_more_my">我的日程</string>
+    <string name="schdule_more_other">成员日程</string>
+    <string name="schdule_select_time">选择时间</string>
+    <string name="schdule_select_contact">成员列表</string>
+    <string name="schdule_member_schdule_title">的日程</string>
+    <string name="schdule_event_content_hit">请填写日程内容</string>
+    <string name="schdule_event_new">新建日程</string>
+    <string name="schdule_event_edit">编辑日程</string>
+    <string name="schdule_event_show">查看日程</string>
+    <string name="schdule_time_title">提醒时间</string>
+
+    <string name="workflow_sendname">发件人</string>
+    <string name="warn_deleteWarnMsg">解除示警?</string>
+
+    <string name="searchview_title_search">搜索</string>
+    <string name="searchview_search_none">没有您搜索的用户</string>
+    <string name="searchview_clean_detial">清除条件</string>
+
+
+    <string name="keyword_mun">星期一</string>
+    <string name="keyword_tus">星期二</string>
+    <string name="keyword_wen">星期三</string>
+    <string name="keyword_ths">星期四</string>
+    <string name="keyword_fri">星期五</string>
+    <string name="keyword_sat">星期六</string>
+    <string name="keyword_sun">星期天</string>
+
+    <string name="login_hit_user">请输入用户名</string>
+    <string name="login_hit_password">请输入密码</string>
+    <string name="login_btn_login">登录</string>
+    <string name="login_check_save_name">记住账号</string>
+    <string name="login_check_save_password">记住密码</string>
+    <string name="login_network">还没连接网络？</string>
+    <string name="login_setting">设置网络</string>
+    <string name="login_title">登录一米云检账号</string>
+
+    <string name="device_print">奔图打印机</string>
+    <string name="device_print_p2200w">奔图p2200w</string>
+    <string name="device_potc">免疫层析结果判断记录仪</string>
+    <string name="device_fada">全自动干式生化分析仪</string>
+    <string name="device_state_connecting">正在连接</string>
+    <string name="device_state_search">搜索中</string>
+    <string name="device_state_connected">已连接</string>
+    <string name="device_state_disconnected">未连接(点击连接)</string>
+    <string name="device_bluetooth_error">蓝牙已关闭,请先打开蓝牙</string>
+
+    <string name="print_name">姓名:</string>
+    <string name="print_pnumber">病历号:</string>
+    <string name="print_depart">科室:</string>
+    <string name="print_sender">送检人:</string>
+    <string name="print_age">年龄:</string>
+    <string name="print_dnumber">住院/门诊号:</string>
+    <string name="print_bnumber">床号:</string>
+    <string name="print_senddete">送检日期:</string>
+    <string name="print_sex">性别:</string>
+    <string name="print_des">诊断:</string>
+    <string name="print_project">项目:</string>
+    <string name="print_result">结果:</string>
+    <string name="print_temp">参考值:</string>
+    <string name="print_unit">单位:</string>
+    <string name="print_testtime">检测时间:</string>
+    <string name="print_testname">检测员:</string>
+    <string name="print_approvename">审核员:</string>
+    <string name="print_reporttime">报告时间:</string>
+    <string name="print_memo">备注:</string>
+    <string name="print_message_error">已有正在执行的打印请求,请等待请求完成</string>
+    <string name="print_message_view">正在创建打印页面</string>
+    <string name="print_message_view_success">创建打印页面成功,已经添加到打印机任务,可返回继续执行其他操作，或者等待打印机打印完毕</string>
+    <string name="print_message_init">正在生成打印数据</string>
+    <string name="print_message_send">正在向打印机发送打印数据</string>
+    <string name="print_message_print_all">打印任务已经全部执行完毕</string>
+    <string name="print_message_send_success">发送打印数据成功,请等待打印机完成打印</string>
+    <string name="print_message_send_fail">发送打印数据失败,请检查打印机配置</string>
+    <string name="print_title_sample">(POCT)检测报告单</string>
+    <string name="print_title">宁波海尔施医学检验所(POCT)检验报告单</string>
+    <string name="print_end_memo">此结果仅对该样本负责</string>
+    <string name="print_approve_title">打印报告未审核通过</string>
+    <string name="print_approve_msg">该报告还未审核通过,是否继续打印?</string>
+
+    <string name="report_name_hdl_c">高密度脂蛋白胆固醇(HDL-C)</string>
+    <string name="report_name_glu">葡萄糖(GLU)</string>
+    <string name="report_name_tc">总胆固醇(TC)</string>
+    <string name="report_name_tg">甘油三酯(TG)</string>
+    <string name="report_name_vldl_c">极低密度脂蛋白胆固醇(VLDL-C)</string>
+    <string name="report_name_ldl_c">低密度脂蛋白胆固醇(LDL-C)</string>
+    <string name="report_name_ai">动脉硬化指数(AI)</string>
+    <string name="report_name_r_chd">冠心病危险指数(R-CHD)</string>
+    <string name="report_name_alt">谷丙转氨酶(ALT)</string>
+
+    <string name="report_name_afp">甲胎蛋白(AFP)</string>
+    <string name="report_name_crp">C反应蛋白(CRP)</string>
+    <string name="report_name_hscrp">超敏C反应蛋白(hsCRP)</string>
+    <string name="report_name_ctni">心肌肌钙蛋白I(CTnI)</string>
+    <string name="report_name_d_dimer">D二聚体(D-Dimer)</string>
+    <string name="report_name_hcg">人绒毛膜促性腺激素(HCG)</string>
+    <string name="report_name_malb">尿微量白蛋白(mAlb)</string>
+    <string name="report_name_mp">肺炎支原体(MP)</string>
+    <string name="report_name_nt_probnp">N端脑钠肽前体(NT-proBNP)</string>
+    <string name="report_name_pct">人降钙素原(PCT)</string>
+    <string name="report_name_sf">铁蛋白(SF)</string>
+    <string name="report_name_tsh">促甲状腺激素(TSH)</string>
+    <string name="report_name_hpab">胃幽门螺杆菌抗体(HPAb)</string>
+
+
+    <string name="bluetooth_device_connect">设备连接成功,正在调整设备</string>
+    <string name="bluetooth_device_disconnect">设备已断开</string>
+    <string name="bluetooth_device_connecting">正在连接设备</string>
+    <string name="bluetooth_device_search">正在搜索设备</string>
+    <string name="bluetooth_device_ready">设备已就绪</string>
+    <string name="bluetooth_device_connect_error">设备连接失败</string>
+
+    <string name="setting_title">设置</string>
+    <string name="setting_title_all">系统设置</string>
+    <string name="setting_title_back">返回</string>
+    <string name="setting_title_wifi">WI-FI</string>
+    <string name="setting_title_wifi_head">WI-FI设置</string>
+    <string name="setting_title_bluetooth_head">蓝牙设置</string>
+    <string name="setting_title_audio_head">声音设置</string>
+    <string name="setting_title_equipment_head">外接设备设置</string>
+    <string name="setting_title_bluetooth">蓝牙</string>
+    <string name="setting_title_audio">声音</string>
+    <string name="setting_title_touch_autio">触摸提示音</string>
+    <string name="setting_title_sys_autio_level">系统音量</string>
+    <string name="setting_title_mus_autio_level">音乐音量</string>
+    <string name="setting_title_equipment">外接设备</string>
+    <string name="setting_title_equipment_unset">未配置</string>
+    <string name="setting_title_time">时间</string>
+    <string name="setting_system">系统更新</string>
+    <string name="setting_title_time_head">时间设置</string>
+    <string name="setting_title_time_auto">自动确定时间和日期</string>
+    <string name="setting_title_time_auto_hit">使用网络提供的时间</string>
+    <string name="setting_title_set_dete">设置日期</string>
+    <string name="setting_title_set_time">设置时间</string>
+    <string name="setting_title_24hour">使用24小时制</string>
+    <string name="setting_time">设置时间</string>
+    <string name="setting_dete">设置日期</string>
+    <string name="setting_dete_start">设置开始日期</string>
+    <string name="setting_dete_end">设置结束日期</string>
+    <string name="setting_title_system_head">固件信息</string>
+    <string name="setting_title_system_version">当前版本</string>
+    <string name="setting_title_system_version_new">检测更新</string>
+    <string name="setting_title_system_safe_new">工程模式</string>
+    <string name="setting_title_system_version_none">暂无更新版本</string>
+    <string name="setting_title_system_updata">点击开始安装</string>
+    <string name="setting_title_system_download">正在下载更新版本</string>
+    <string name="setting_title_system_download_finish">已经准备好更新</string>
+    <string name="setting_title_system_latest">已经是最新版本</string>
+    <string name="setting_title_system_install_already">已经在安装了请稍后</string>
+    <string name="setting_title_system_updata_imf_fail">获取更新信息失败</string>
+
+    <string name="testcenter_title_all">检测中心</string>
+    <string name="reportcenter_title_all">检测报告</string>
+
+    <string name="wifi_connect">连接</string>
+    <string name="wifi_nosave">不保存</string>
+    <string name="wifi_saveed">已保存</string>
+    <string name="wifi_addcode">加密</string>
+    <string name="wifi_leave">信号强度</string>
+    <string name="wifi_type">加密类型</string>
+    <string name="wifi_password">密码</string>
+
+    <string name="equip_print_ip">请输入打印机ip</string>
+    <string name="equip_print_set">打印机配置</string>
+    <string name="equip_print_set_mess">打印机配置</string>
+    <string name="equip_print_potc_id">请输入设备ID号</string>
+    <string name="equip_print_potc_mess">设备ID号可以在免疫层析结果判断记录仪系统界面查看到</string>
+    <string name="equip_print_device_set">设备配置</string>
+    <string name="equip_print_fada_id">请输入设备SN号</string>
+    <string name="equip_print_fada_mess">设备SN号可以在全自动干式生化分析仪底部铭牌上或者在设备查询界面获得</string>
+
+    <string name="error_no_print">打印机未配置</string>
+    <string name="error_ip_wrong">ip地址格式错误</string>
+    <string name="error_relogin">请重新登录</string>
+
+    <string name="gatt_services_read">Read</string>
+    <string name="gatt_services_write">Write</string>
+    <string name="gatt_services_notify">Notify</string>
+    <string name="gatt_services_indicate">Indicate</string>
+
+    <string name="blood_pressure_systolic">SYS</string>
+    <string name="blood_pressure_diastolic">DIA</string>
+    <string name="blood_pressure_start_btn">START</string>
+    <string name="blood_pressure_stop_btn">STOP</string>
+    <string name="blood_pressure_mmHg">mmHg</string>
+    <string name="blood_pressure_kPa"> kPa</string>
+
+    <string name="test_center_username">用户姓名:</string>
+    <string name="test_center_doctor">检测人:</string>
+    <string name="test_center_begin">开始日期:</string>
+    <string name="test_center_end">结束日期:</string>
+    <string name="test_center_p_name">姓名</string>
+    <string name="test_center_p_sex">性别</string>
+    <string name="test_center_p_age">年龄</string>
+    <string name="test_center_p_sender">送检人(单位)</string>
+    <string name="test_center_p_sender2">送检人</string>
+    <string name="test_center_p_time">检测时间</string>
+    <string name="test_center_p_times">送检时间</string>
+    <string name="test_center_p_count">检测数目</string>
+    <string name="test_center_p_approvestate">审核状态</string>
+    <string name="test_center_p_approvesr">审核人</string>
+    <string name="test_center_p_approvetime">审核时间</string>
+    <string name="test_center_p_buttons">操作</string>
+    <string name="test_center_p_cnum">病历号</string>
+    <string name="test_center_p_dep">科室</string>
+    <string name="test_center_p_des">诊断</string>
+    <string name="test_center_p_memo">备注</string>
+    <string name="test_center_p_hnum">住院/门诊号</string>
+    <string name="test_center_p_id">身份证号</string>
+    <string name="test_center_p_bad">床号</string>
+    <string name="test_center_creat">添加用户</string>
+    <string name="test_center_add">新增用户</string>
+    <string name="test_center_temp">样本编辑</string>
+    <string name="test_center_name_empty">姓名不能为空</string>
+    <string name="test_center_name_age">年龄不能为空</string>
+    <string name="test_center_report_updete">检测项不能为0</string>
+
+    <string name="imf_word_now">当前第</string>
+    <string name="imf_word_all">共</string>
+    <string name="imf_word_every">每页显示</string>
+    <string name="imf_word_page">页</string>
+    <string name="imf_word_one">条</string>
+    <string name="imf_word_data">数据</string>
+    <string name="imf_word_error_end">已经是最后一页</string>
+    <string name="imf_word_error_begin">已经是第一页</string>
+    <string name="imf_word_delete">删除此报告,只是删除本地数据,不会影响已上传数据</string>
+
+    <string name="qtest_title_all">即时快检</string>
+    <string name="qtest_title_head_left">待分配的检测项目,检测时间</string>
+    <string name="qtest_title_head_right">已分配的检测项目</string>
+    <string name="qtest_list_head_tempid">样本号</string>
+    <string name="qtest_list_head_pname">项目名称</string>
+    <string name="qtest_list_head_result">测试结果</string>
+    <string name="qtest_list_head_time">测试时间</string>
+    <string name="qtest_list_head_unit">单位</string>
+    <string name="qtest_list_head_oper">操作</string>
+    <string name="qtest_error_device">您还未配置该设备</string>
+    <string name="qtest_error_device_find">未找到该设备,请检查设备配置</string>
+    <string name="qtest_buttom_imf_fada_get">待获取样本号</string>
+    <string name="qtest_buttom_imf_fada_give">待分配样本号</string>
+    <string name="qtest_title_get_data">待分配编号</string>
+    <string name="qtest_title_get_data_message">请在设备上查询界面点击启动获取或者重新检测获取，如果要重新检测获取，请勿退出该页面，否则无法收到数据</string>
+    <string name="qtest_title_device_unconnect">请等待设备连接</string>
+    <string name="qtest_title_device_nodata">没有需要获取的数据</string>
+    <string name="qtest_error_devicetemp_add">您还未添加该设备的样本号</string>
+    <string name="qtest_potc_temp_error1">获取样本</string>
+    <string name="qtest_potc_temp_error2">失败</string>
+    <string name="qtest_potc_temp_no_data">未获取到数据</string>
+
+    <string name="add_printer_scheme" translatable="false">printer</string>
+    <string name="add_printer_host" translatable="false">printer.add</string>
+    <string name="error_job_disappeared">Print job took too long or printer was deleted</string>
+
+    <string name="updata_new_install">正在安装更新,这可能需要几分钟时间</string>
+</resources>

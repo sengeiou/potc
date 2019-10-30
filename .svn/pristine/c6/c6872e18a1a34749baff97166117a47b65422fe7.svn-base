@@ -1,0 +1,718 @@
+package com.poct.android.prase;
+
+import android.content.Context;
+
+import com.poct.R;
+import com.poct.android.entity.Report;
+import com.poct.android.entity.SeriesReport;
+import com.poct.android.entity.TempGet;
+import com.poct.android.manager.EquipMentManager;
+import com.poct.android.utils.DBHelper;
+import com.poct.android.utils.XpxJSONArray;
+import com.poct.android.utils.XpxJSONObject;
+import com.poct.android.view.PoctApplication;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class DataPrase {
+
+    public static final int ACTION_ADD = 0;
+    public static final int ACTION_DELETE = 1;
+
+    public static int praseGetReportCount(String text) {
+        String regEx = "[|]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(text);
+        String a = m.replaceAll(",").trim();
+        String data[] = a.split(",");
+        int count = Integer.valueOf(data[1]);
+        return count;
+    }
+
+    public static void praseGetReport(String text, ArrayList<Report> reports) {
+        String regEx = "[|]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(text);
+        String a = m.replaceAll(",").trim();
+        String data[] = a.split(",");
+        Report report = new Report(EquipMentManager.DEVICE_POTC);
+        int temp = Integer.parseInt(data[2]);
+        report.reportId = data[1];
+        report.tempId = String.valueOf(temp);
+        report.projectName = checkItem(data[3]);
+//        report.mGod = data[4];        report.mGod = data[4];
+        report.mResult = data[5];
+        report.unit = data[6];
+        if (report.unit.equals("!NULL")) {
+            report.unit = "";
+        }
+        report.tempResult = data[7];
+        report.time = data[8];
+        reports.add(report);
+    }
+
+    public static String getPotcTempid(String text) {
+        String regEx = "[|]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(text);
+        String a = m.replaceAll(",").trim();
+        String data[] = a.split(",");
+        return data[2];
+    }
+
+    public static String checkItem(String name) {
+        String resultname = name;
+        if(name.toLowerCase().equals("fap"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_afp);
+        }
+        else if(name.toLowerCase().equals("crp"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_crp);
+        }
+        else if(name.toLowerCase().equals("hscrp"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_hscrp);
+        }
+        else if(name.toLowerCase().equals("ctni"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_ctni);
+        }
+        else if(name.toLowerCase().equals("d-dimer"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_d_dimer);
+        }
+        else if(name.toLowerCase().equals("hcg"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_hcg);
+        }
+        else if(name.toLowerCase().equals("malb"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_malb);
+        }
+        else if(name.toLowerCase().equals("mp"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_mp);
+        }
+        else if(name.toLowerCase().equals("nt-probnp"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_nt_probnp);
+        }
+        else if(name.toLowerCase().equals("pct"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_pct);
+        }
+        else if(name.toLowerCase().equals("sf"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_sf);
+        }
+        else if(name.toLowerCase().equals("tsh"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_tsh);
+        }
+        else if(name.toLowerCase().equals("hpab"))
+        {
+            resultname = PoctApplication.mApp.getString(R.string.report_name_hpab);
+        }
+        return resultname;
+    }
+
+    public static ArrayList<Report> padaPrase(String data, TempGet mTempGet, ArrayList<Report> seriesReportins) {
+        SeriesReport seriesReport = new SeriesReport();
+//        seriesReport.mTime = data;
+        String tempid = mTempGet.mTempid;
+        String[] report = data.split(" ");
+        if (report[14].equals("06")) {
+            Report testReport1 = creatReport(report[16] + report[17], report[15]);
+            testReport1.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport1.tempId = tempid;
+            Report testReport2 = creatReport(report[19] + report[20], report[18]);
+            testReport2.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport2.tempId = tempid;
+            Report testReport3 = creatReport(report[22] + report[23], report[21]);
+            testReport3.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport3.tempId = tempid;
+            Report testReport4 = creatReport(report[25] + report[26], report[24]);
+            testReport4.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport4.tempId = tempid;
+            Report testReport5 = creatReport(report[28] + report[29], report[27]);
+            testReport5.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport5.tempId = tempid;
+            Report testReport6 = creatReport(report[31] + report[32], report[30]);
+            testReport6.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport6.tempId = tempid;
+            Report testReport7 = creatRchdReport(report[22] + report[23], report[16] + report[17]);
+            testReport7.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport7.tempId = tempid;
+            Report testReport8 = creatAiReport(report[22] + report[23], report[16] + report[17]);
+            testReport8.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport8.tempId = tempid;
+            if(checkReport(seriesReportins,testReport1) == false)
+            seriesReport.mReports.add(testReport1);
+            if(checkReport(seriesReportins,testReport2) == false)
+            seriesReport.mReports.add(testReport2);
+            if(checkReport(seriesReportins,testReport3) == false)
+            seriesReport.mReports.add(testReport3);
+            if(checkReport(seriesReportins,testReport4) == false)
+            seriesReport.mReports.add(testReport4);
+            if(checkReport(seriesReportins,testReport5) == false)
+            seriesReport.mReports.add(testReport5);
+            if(checkReport(seriesReportins,testReport6) == false)
+            seriesReport.mReports.add(testReport6);
+            if(checkReport(seriesReportins,testReport7) == false)
+            seriesReport.mReports.add(testReport7);
+            if(checkReport(seriesReportins,testReport8) == false)
+            seriesReport.mReports.add(testReport8);
+        } else {
+            Report testReport1 = creatReport(report[16] + report[17], report[15]);
+            testReport1.time = measureTime(report[8], report[9], report[10], report[11], report[12], report[13]);
+            testReport1.tempId = tempid;
+            if(checkReport(seriesReportins,testReport1) == false);
+            seriesReport.mReports.add(testReport1);
+        }
+
+
+        return seriesReport.mReports;
+    }
+
+    public static boolean checkReport(ArrayList<Report> seriesReportins,Report mReport)
+    {
+        boolean has = false;
+        for(int i = 0 ; i < seriesReportins.size() ; i++)
+        {
+            if(seriesReportins.get(i).tempId.equals(mReport.tempId))
+            {
+                if(seriesReportins.get(i).projectName.equals(mReport.projectName))
+                {
+                    has = true;
+                    break;
+                }
+            }
+        }
+        return has;
+    }
+
+    private static String measureTime(String year, String month, String day, String hour, String miniute, String second) {
+        int y = Integer.valueOf(year, 16) + 2000;
+        int m = Integer.valueOf(month, 16);
+        int d = Integer.valueOf(day, 16);
+        int h = Integer.valueOf(hour, 16);
+        int mu = Integer.valueOf(miniute, 16);
+        String time = String.format("%04d-%02d-%02d %02d:%02d", y, m, d, h, mu);
+        return time;
+    }
+
+    private static void measureData(String data, int count, String type, int min, int max, int temp1, int temp2, Report report) {
+        int realdata = Integer.valueOf(data, 16);
+        double a;
+        if (realdata < min) {
+            a = (double) min / (double) count;
+            report.mGod = "<" + formate(a, type);
+            report.mResult = "↓↓";
+        } else if (realdata > max) {
+            a = (double) max / (double) count;
+            report.mGod = ">" + formate(a, type);
+            report.mResult = "↑↑";
+        } else {
+            if (realdata > temp2) {
+                report.mResult = "↑";
+            } else if (realdata < temp1) {
+                report.mResult = "↓";
+            }
+            a = (double) realdata / (double) count;
+            report.mGod = formate(a, type);
+        }
+    }
+
+    private static void measureData(String data, int count, String type, int temp1, int temp2, Report report) {
+        int realdata = Integer.valueOf(data, 16);
+        double a;
+
+
+        if (realdata > temp2 && temp2 != -1) {
+            report.mResult = "↑";
+        } else if (realdata < temp1 && temp1 != -1) {
+            report.mResult = "↓";
+        }
+        a = (double) realdata / (double) count;
+        report.mGod = formate(a, type);
+
+
+    }
+
+    private static Report creatRchdReport(String data1, String data2) {
+        Report mReport = new Report(EquipMentManager.DEVICE_FADA);
+        int realdata1 = Integer.valueOf(data1, 16);
+        int realdata2 = Integer.valueOf(data2, 16);
+        if (realdata2 == 0) {
+            mReport.mGod = "0";
+            mReport.mResult = "";
+        } else {
+            double a = (double) realdata1 / (double) realdata2;
+            if (a <= 4.50) {
+                mReport.mResult = "";
+            } else {
+                mReport.mResult = "↑";
+            }
+            mReport.mGod = formate(a, "");
+        }
+        mReport.unit = "";
+        mReport.tempResult = "≤4.50";
+        mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_r_chd);
+        return mReport;
+    }
+
+    private static Report creatAiReport(String data1, String data2) {
+        Report mReport = new Report(EquipMentManager.DEVICE_FADA);
+        int realdata1 = Integer.valueOf(data1, 16);
+        int realdata2 = Integer.valueOf(data2, 16);
+        if (realdata2 == 0 || realdata1 <= realdata2) {
+            mReport.mGod = "0.00";
+            mReport.mResult = "";
+        } else {
+            double a = ((double) realdata1 - (double) realdata2) / (double) realdata2;
+            NumberFormat nf = NumberFormat.getNumberInstance();
+            nf.setMaximumFractionDigits(2);
+            if (a <= 4.00) {
+                mReport.mResult = "";
+            } else {
+                mReport.mResult = "↑";
+            }
+            mReport.mGod = formate(a, "");
+        }
+        mReport.unit = "";
+        mReport.tempResult = "≤4.00";
+        mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_ai);
+        return mReport;
+    }
+
+    public static String formate(double data, String type) {
+        String value = "";
+        if (type.equals("0F")) {
+            value = String.format("%.2f", data);
+        } else if (type.equals("06")) {
+            value = String.format("%.1f", data);
+        } else if (type.equals("0E")) {
+            value = String.format("%.2f", data);
+        } else if (type.equals("0B")) {
+            value = String.format("%.2f", data);
+        } else if (type.equals("11")) {
+            value = String.format("%.2f", data);
+        } else if (type.equals("12")) {
+            value = String.format("%.2f", data);
+        } else if (type.equals("09")) {
+            value = String.format("%.1f", data);
+        } else {
+            value = String.format("%.2f", data);
+        }
+        return value;
+    }
+
+    public static ArrayList<Report> praseLocalReport(String json) {
+        ArrayList<Report> reports = new ArrayList<Report>();
+        try {
+            XpxJSONArray ja = new XpxJSONArray(json);
+            for (int i = 0; i < ja.length(); i++) {
+                XpxJSONObject jsonObject = ja.getJSONObject(i);
+                Report mReport = new Report(jsonObject.getString("type"));
+                mReport.reportId = jsonObject.getString("reportid");
+                mReport.tempId = jsonObject.getString("tempid");
+                mReport.projectName = jsonObject.getString("projectname");
+                mReport.mGod = jsonObject.getString("god");
+                mReport.mResult = jsonObject.getString("result");
+                mReport.unit = jsonObject.getString("unit");
+                mReport.tempResult = jsonObject.getString("tempresult");
+                mReport.time = jsonObject.getString("time");
+                reports.add(mReport);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return reports;
+    }
+
+    public static String mageLocalReport(ArrayList<Report> reports) {
+        JSONArray ja = new JSONArray();
+        try {
+
+            for (int i = 0; i < reports.size(); i++) {
+                Report mReport = reports.get(i);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("reportid", mReport.reportId);
+                jsonObject.put("tempid", mReport.tempId);
+                jsonObject.put("projectname", mReport.projectName);
+                jsonObject.put("god", mReport.mGod);
+                jsonObject.put("result", mReport.mResult);
+                jsonObject.put("unit", mReport.unit);
+                jsonObject.put("tempresult", mReport.tempResult);
+                jsonObject.put("time", mReport.time);
+                jsonObject.put("type", mReport.type);
+                ja.put(jsonObject);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ja.toString();
+    }
+
+    public static ArrayList<TempGet> getTempid(String old, String type,SeriesReport seriesReport,ArrayList<Report> reports) {
+        ArrayList<TempGet> tempGets = new ArrayList<TempGet> ();
+        try {
+            JSONObject jsonobject;
+            if(old.length() == 0)
+            {
+                jsonobject = new JSONObject();
+                JSONArray ja1 = new JSONArray();
+                JSONArray ja2 = new JSONArray();
+                jsonobject.put(EquipMentManager.DEVICE_POTC,ja1);
+                jsonobject.put(EquipMentManager.DEVICE_FADA,ja2);
+            }
+            else
+            {
+                jsonobject = new JSONObject(old);
+            }
+            JSONArray ja = jsonobject.getJSONArray(type);
+            for(int i = 0 ; i < ja.length() ; i++)
+            {
+                JSONObject jo = ja.getJSONObject(i);
+                TempGet tempGet = new TempGet(jo.getString("tempid"),false);
+                tempGet.realcount = jo.getInt("count");
+                boolean has = false;
+                int count = tempGet.realcount;
+                if(tempGet.realcount != -1)
+                {
+                    for(int j = 0 ; j < seriesReport.mReports.size() ; j++)
+                    {
+                        if(seriesReport.mReports.get(j).tempId.equals(tempGet.mTempid) && type.equals(seriesReport.mReports.get(j).type))
+                        {
+                            if(count >  0)
+                            {
+                                count--;
+                            }
+                            if(count == 0)
+                            {
+                                has = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(has == false)
+                tempGets.add(tempGet);
+
+                if(has == true)
+                {
+                    tempGet.isGet = true;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tempGets;
+    }
+
+    public static ArrayList<TempGet> getAllTempid(String old, String type,SeriesReport seriesReport,ArrayList<Report> reports) {
+        ArrayList<TempGet> tempGets = new ArrayList<TempGet> ();
+        try {
+            JSONObject jsonobject;
+            if(old.length() == 0)
+            {
+                jsonobject = new JSONObject();
+                JSONArray ja1 = new JSONArray();
+                JSONArray ja2 = new JSONArray();
+                jsonobject.put(EquipMentManager.DEVICE_POTC,ja1);
+                jsonobject.put(EquipMentManager.DEVICE_FADA,ja2);
+            }
+            else
+            {
+                jsonobject = new JSONObject(old);
+            }
+            JSONArray ja = jsonobject.getJSONArray(type);
+            for(int i = 0 ; i < ja.length() ; i++)
+            {
+                JSONObject jo = ja.getJSONObject(i);
+                TempGet tempGet = new TempGet(jo.getString("tempid"),false);
+                tempGet.realcount = jo.getInt("count");
+                boolean has = false;
+                int count = tempGet.realcount;
+                if(tempGet.realcount != -1)
+                {
+                    for(int j = 0 ; j < seriesReport.mReports.size() ; j++)
+                    {
+                        if(seriesReport.mReports.get(j).tempId.equals(tempGet.mTempid) && type.equals(seriesReport.mReports.get(j).type))
+                        {
+                            if(count >  0)
+                            {
+                                count--;
+                            }
+                            if(count == 0)
+                            {
+                                has = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(has == true)
+                {
+                    tempGet.isGet = true;
+                }
+                tempGets.add(tempGet);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tempGets;
+    }
+
+    public static String updataTempid(String old,ArrayList<TempGet> tempGets,String type) {
+        try {
+            JSONObject jsonobject;
+            if(old.length() == 0)
+            {
+                jsonobject = new JSONObject();
+                JSONArray ja1 = new JSONArray();
+                JSONArray ja2 = new JSONArray();
+                jsonobject.put(EquipMentManager.DEVICE_POTC,ja1);
+                jsonobject.put(EquipMentManager.DEVICE_FADA,ja2);
+            }
+            else
+            {
+                jsonobject = new JSONObject(old);
+            }
+            jsonobject.remove(type);
+            JSONArray ja = new JSONArray();
+            jsonobject.put(EquipMentManager.DEVICE_POTC,ja);
+            for(int i = 0 ; i < tempGets.size(); i++)
+            {
+                TempGet mTempGet= tempGets.get(i);
+                JSONObject jo = new JSONObject();
+                jo.put("tempid",mTempGet.mTempid);
+                jo.put("count",mTempGet.realcount);
+                ja.put(jo);
+            }
+            return jsonobject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String addTempid(String old,String id,String type) {
+
+        try {
+            JSONObject jsonobject;
+            if(old.length() == 0)
+            {
+                jsonobject = new JSONObject();
+                JSONArray ja1 = new JSONArray();
+                JSONArray ja2 = new JSONArray();
+                jsonobject.put(EquipMentManager.DEVICE_POTC,ja1);
+                jsonobject.put(EquipMentManager.DEVICE_FADA,ja2);
+            }
+            else
+            {
+                jsonobject = new JSONObject(old);
+            }
+            JSONArray ja = jsonobject.getJSONArray(type);
+            JSONObject jo = new JSONObject();
+            jo.put("tempid",id);
+            jo.put("count",-1);
+            ja.put(jo);
+            return jsonobject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static boolean getTempid(String old,String type)
+    {
+
+        try {
+            JSONObject jsonobject;
+            if(old.length() == 0)
+            {
+                return false;
+            }
+            else
+            {
+                jsonobject = new JSONObject(old);
+            }
+            JSONArray ja = jsonobject.getJSONArray(type);
+            if(ja.length() > 0)
+            {
+                return  true;
+            }
+
+            return false;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static String praseTempid(String old,TempGet mTempGet,String type)
+    {
+        JSONObject jsonobject;
+        try {
+
+            jsonobject = new JSONObject(old);
+            JSONArray ja = jsonobject.getJSONArray(type);
+            for(int i = 0 ; i < ja.length() ; i++)
+            {
+                JSONObject jo = ja.getJSONObject(i);
+                if(jo.getString("tempid").equals(mTempGet.mTempid))
+                {
+                    jo.put("count",mTempGet.realcount);
+                }
+            }
+            return jsonobject.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private static Report creatReport(String data, String type) {
+        Report mReport = new Report(EquipMentManager.DEVICE_FADA);
+        if (type.equals("0F")) {
+            measureData(data, 100, type, 40, 390, 100, 190, mReport);
+            mReport.unit = "mmol/L";
+            mReport.tempResult = "1.00-1.90";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_hdl_c);
+        } else if (type.equals("06")) {
+            measureData(data, 10, type, 20, 200, 39, 61, mReport);
+            mReport.unit = "mmol/L";
+            mReport.tempResult = "3.9-6.1";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_glu);
+        } else if (type.equals("0E")) {
+            measureData(data, 100, type, 200, 1200, 312, 518, mReport);
+            mReport.unit = "mmol/L";
+            mReport.tempResult = "3.12-5.18";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_tc);
+        } else if (type.equals("0B")) {
+            measureData(data, 100, type, 40, 600, 44, 170, mReport);
+            mReport.unit = "mmol/L";
+            mReport.tempResult = "0.44-1.70";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_tg);
+        } else if (type.equals("11")) {
+            measureData(data, 100, type, 21, 78, mReport);
+            mReport.unit = "mmol/L";
+            mReport.tempResult = "0.21-0.78";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_vldl_c);
+        } else if (type.equals("12")) {
+            measureData(data, 100, type, 0, 310, mReport);
+            mReport.unit = "mmol/L";
+            mReport.tempResult = "0.00-3.10";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_ldl_c);
+        } else if (type.equals("09")) {
+            measureData(data, 10, type, 50, 2000, -1, 40, mReport);
+            mReport.unit = "U/L";
+            mReport.tempResult = "≤40.0";
+            mReport.projectName = PoctApplication.mApp.getString(R.string.report_name_alt);
+        }
+        return mReport;
+    }
+
+    public static String addTempDbData(String oldjson, String reportid, Context context,String recordid) {
+        int id = 0;
+        JSONArray ja = null;
+        try {
+
+            if(oldjson.length() == 0)
+            {
+                ja = new JSONArray();
+            }
+            else
+            {
+                ja = new JSONArray(oldjson);
+            }
+
+            if(ja.length() == 0)
+            {
+                JSONObject jo = new JSONObject();
+                ja.put(jo);
+                jo.put("reportid",reportid);
+                jo.put("tempid","1");
+                id = 1;
+            }
+            else
+            {
+                for(int i = 0 ; i < ja.length() ; i++)
+                {
+                    JSONObject jo = ja.getJSONObject(i);
+                    int tempid = Integer.valueOf(jo.getString("tempid"));
+                    if(tempid != (i+1))
+                    {
+                        JSONObject jo2 = ja.getJSONObject(i-1);
+                        int tempid2 = Integer.valueOf(jo2.getString("tempid"));
+                        int newtemp = tempid2+1;
+                        JSONObject jo3 = new JSONObject();
+                        ja.put(i-1,jo3);
+                        jo3.put("reportid",reportid);
+                        jo3.put("tempid",String.valueOf(newtemp));
+                        id = newtemp;
+                        break;
+                    }
+                }
+                if(id == 0)
+                {
+                    JSONObject jo = ja.getJSONObject(ja.length()-1);
+                    id = Integer.valueOf(jo.getString("tempid"))+1;
+                    JSONObject jo3 = new JSONObject();
+                    ja.put(jo3);
+                    jo3.put("reportid",reportid);
+                    jo3.put("tempid",id);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        DBHelper.getInstance(context).saveTempId(recordid,ja.toString());
+        return String.valueOf(id);
+    }
+
+    public static String deleteTempDbData(String oldjson,String tempid) {
+        JSONArray ja = null;
+        try {
+            if(oldjson.length() == 0)
+            {
+                return "";
+            }
+            else
+            {
+                ja = new JSONArray(oldjson);
+                for(int i = 0 ; i < ja.length() ; i++) {
+                    JSONObject jo = ja.getJSONObject(i);
+                    if (jo.getString("tempid").equals(tempid)) {
+                        ja.remove(i);
+                        break;
+                    }
+                }
+                return ja.toString();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            if(ja != null)
+            {
+                return ja.toString();
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
+    }
+}

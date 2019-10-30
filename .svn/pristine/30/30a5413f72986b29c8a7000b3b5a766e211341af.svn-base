@@ -1,0 +1,37 @@
+handle事件即各种id对应
+000000
+第一位 事件类型
+1 - 网络请求成功事件
+2 - 网络请求失败事件
+3 - Activity内事件
+4 - 权限请求返回事件
+5 - Activity之间result返回事件
+6 - 模块内事件
+
+第二位第三位 Activity id ,网络请求类型id 权限类型id （在第一位是3和5的情况下）
+
+LoginActivity 00
+MainActivity 01
+SettingActivity 02
+ReportCenterActivity 03
+TestCenterActivity 04
+PotcTestActivity 05
+FadaTestActivity 06
+ReportPrintActivity 07
+
+第四第五位 事件id （在第一位是3和5的情况下）00-99
+
+
+
+命名规范:前缀+名字
+常量全部大写,变量驼峰命名,java文件名称单词首字母大写,res中的文件名称全部小写单词之间下划线,文件夹全部小写
+常用前缀：ACTION
+activity
+item
+txt
+etxt
+btn
+list
+layer
+
+

@@ -1,0 +1,29 @@
+package com.poct.android.entity;
+
+import java.util.ArrayList;
+
+public class SeriesReport {
+
+    public String mReportId = "";
+    public String mPId = "";
+    public String mAccountId = "";
+    public String mName = "";
+    public String mSex = "";
+    public String mAge = "";
+    public String mSender = "";
+//    public String mTime = "";
+    public String mSendTime = "";
+    public String mApprover = "";
+    public String mCNum = "";
+    public String mHNum = "";
+    public String mDepart = "";
+    public String mBad = "";
+    public String mDes = "";
+    public String mMemo = "";
+    public String tempId = "";
+    public String mApproveTime = "";
+    public boolean isUpdate = false;
+    public String isApprove = "0";
+    public ArrayList<Report> mReports = new ArrayList<Report>();
+
+}

@@ -1,0 +1,90 @@
+package com.poct.android.thread;
+
+
+import android.graphics.Bitmap;
+import android.os.Handler;
+
+import com.poct.android.manager.EquipMentManager;
+import com.poct.android.manager.PrintManager;
+import com.poct.android.view.PoctApplication;
+
+import org.apache.http.util.EncodingUtils;
+
+public class PrintThread extends Thread {
+
+    public Bitmap bitmap;
+    public Handler mHandler;
+
+    public PrintThread(Bitmap bitmap, Handler mHandler) {
+        this.bitmap = bitmap;
+        this.mHandler = mHandler;
+    }
+
+    @Override
+    public void run() {
+        super.run();
+        int initLLD_IntResult = PoctApplication.mApp.mPrintUtil.initLLD(PoctApplication.mApp.json_Str, 3);
+
+//                BitmapFactory.Options opt 		= new BitmapFactory.Options();
+//                opt.inSampleSize 				= 1;
+//                opt.inJustDecodeBounds			= false;
+        //BMP图片数据
+        Bitmap bmp 						= bitmap;
+
+        String printData 				= null;
+        //BMP图片数据大小
+        int srcImgBMPDataSize			= 0;
+        //BMP图片宽度（像素），该值需要根据实际图片像素填写
+        int srcImgBMPWPixel				= 0;
+        //BMP图片高度（像素），该值需要根据实际图片像素填写
+        int srcImgBMPHPixel				= 0;
+
+        if(bmp != null){
+            printData 						= EncodingUtils.getString(PrintManager.getInstance().getBmpToByte(bmp), "ISO-8859-1");
+
+            int combinationPackageResult 	= PrintManager.getInstance().unPack(printData);
+
+            //BMP图片数据大小
+            srcImgBMPDataSize					= printData.length();
+            //BMP图片宽度（像素），该值需要根据实际图片像素填写
+            srcImgBMPWPixel					= bmp.getWidth();
+            //BMP图片高度（像素），该值需要根据实际图片像素填写
+            srcImgBMPHPixel					= bmp.getHeight();
+        }
+
+        // 打印机IP地址
+        String serverIp					= EquipMentManager.getInstance().devicePrint.id;
+        // 打印机Port
+        int serverPort 					= 9100;
+        // 纸张尺寸宽度（像素）
+        int printPageWPixel 			= 4736;
+        // 纸张尺寸高度（像素）
+        int printPageHPixel 			= 6784;
+        // 打印份数
+        int printNumCopies				= 1;
+        // 打印页数
+        int printPages					= 1;
+
+        //BMP图片位深度（界面层须提供RGB 24位的BMP图片数据）
+        int srcImgBitCount				= 24;
+        // 是否云打印（默认0）
+        int isCloudPrint				= 0;
+        // 云打印类型（默认0）
+        int cloudPrintType				= 0;
+        if(mHandler != null)
+        mHandler.sendEmptyMessage(PrintManager.SEND_DATA_PRINT);
+        int sendDataToServerResult	 	= PoctApplication.mApp.mPrintUtil.sendDataToServer(serverIp, serverPort, printPageWPixel, printPageHPixel, printNumCopies, printPages, srcImgBMPDataSize, srcImgBMPWPixel, srcImgBMPHPixel, srcImgBitCount, isCloudPrint, cloudPrintType);
+        if(sendDataToServerResult > 0)
+        {
+            if(mHandler != null)
+            mHandler.sendEmptyMessageDelayed(PrintManager.SEND_SUCCESS,3000);
+        }
+        else
+        {
+            if(mHandler != null)
+            mHandler.sendEmptyMessage(PrintManager.SEND_FAIL);
+        }
+        int c = sendDataToServerResult;
+
+    }
+}

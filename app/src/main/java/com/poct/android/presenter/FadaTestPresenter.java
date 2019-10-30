@@ -1,0 +1,321 @@
+package com.poct.android.presenter;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+
+import com.poct.R;
+import com.poct.android.asks.ReportAsks;
+import com.poct.android.entity.Report;
+import com.poct.android.handler.FadaTestHandler;
+import com.poct.android.manager.BluetoothSetManager;
+import com.poct.android.manager.EquipMentManager;
+import com.poct.android.prase.DataPrase;
+import com.poct.android.receiver.GattUpdateReceiver;
+import com.poct.android.utils.AppUtils;
+import com.poct.android.utils.DBHelper;
+import com.poct.android.utils.ViewUtils;
+import com.poct.android.view.activity.FadaTestActivity;
+import com.poct.android.view.activity.ReportPrintActivity;
+import com.poct.android.view.activity.TestCenterActivity;
+import com.poct.android.view.adapter.DeviceReportAdapter;
+import com.poct.android.view.adapter.PatientReportAdapter;
+
+/**
+ * Created by xpx on 2017/8/18.
+ */
+
+public class FadaTestPresenter implements Presenter {
+
+    public FadaTestHandler mFadaTestHandler;
+    public FadaTestActivity mFadaTestActivity;
+    public GattUpdateReceiver mGattUpdateReceiver;
+
+    public FadaTestPresenter(FadaTestActivity mFadaTestActivity)
+    {
+        this.mFadaTestActivity = mFadaTestActivity;
+        this.mFadaTestHandler = new FadaTestHandler(mFadaTestActivity);
+        this.mGattUpdateReceiver= new GattUpdateReceiver(mFadaTestHandler);
+    }
+
+    @Override
+    public void Create() {
+        initView();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(GattUpdateReceiver.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(GattUpdateReceiver.ACTION_GATT_DESCRIPTORWRITE_RESULT);
+        intentFilter.addAction(GattUpdateReceiver.ACTION_GATT_CHARACTERISTIC_ERROR);
+        intentFilter.addAction(GattUpdateReceiver.ACTION_GATT_CHARACTERISTIC_WRITE_SUCCESS);
+        intentFilter.addAction(BluetoothSetManager.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothSetManager.ACTION_DEVICE_CONNECTED);
+        intentFilter.addAction(BluetoothSetManager.ACTION_DEVICE_DISCONNECT);
+        intentFilter.addAction(BluetoothSetManager.ACTION_DEVICE_CONNECTING);
+        intentFilter.addAction(BluetoothSetManager.ACTION_DEVICE_READY);
+        intentFilter.addAction(BluetoothSetManager.ACTION_DEVICE_FADA_GET);
+        intentFilter.addAction(BluetoothSetManager.ACTION_DEVICE_CHECK_FADA);
+        mFadaTestActivity.registerReceiver(mGattUpdateReceiver,intentFilter);
+    }
+
+    @Override
+    public void initView() {
+        mFadaTestActivity.setContentView(R.layout.activity_fada_test);
+        EquipMentManager.getInstance().disConnectPotc();
+        mFadaTestActivity.btnBack = mFadaTestActivity.findViewById(R.id.layerback);
+        mFadaTestActivity.imfText = mFadaTestActivity.findViewById(R.id.title2);
+        mFadaTestActivity.headTime = mFadaTestActivity.findViewById(R.id.headtime);
+        mFadaTestActivity.btnGet = mFadaTestActivity.findViewById(R.id.btnget);
+        mFadaTestActivity.connectState = mFadaTestActivity.findViewById(R.id.device_state);
+        mFadaTestActivity.deviceList = mFadaTestActivity.findViewById(R.id.reportlist);
+        mFadaTestActivity.userList = mFadaTestActivity.findViewById(R.id.reportlist2);
+        mFadaTestActivity.buttomimf = mFadaTestActivity.findViewById(R.id.buttomimf);
+        mFadaTestActivity.btnGive = mFadaTestActivity.findViewById(R.id.btnok);
+        mFadaTestActivity.buttomimf2 = mFadaTestActivity.findViewById(R.id.buttomimf2);
+        mFadaTestActivity.btnPrint = mFadaTestActivity.findViewById(R.id.btnprint);
+//        mFadaTestActivity.mSeriesReport = DBHelper.getInstance(mFadaTestActivity).getSeriesReport(mFadaTestActivity.getIntent().getStringExtra(EquipMentManager.REPORT_ID));
+        mFadaTestActivity.mSeriesReport = mFadaTestActivity.getIntent().getParcelableExtra("report");
+        mFadaTestActivity.tempGets.addAll(DataPrase.getTempid(mFadaTestActivity.mSeriesReport.tempId,EquipMentManager.DEVICE_FADA,mFadaTestActivity.mSeriesReport,mFadaTestActivity.mReports));
+        updataButtomImf();
+        mFadaTestActivity.deviceReportAdapter = new DeviceReportAdapter(mFadaTestActivity,mFadaTestActivity.mReports,mFadaTestHandler);
+        mFadaTestActivity.patientReportAdapter = new PatientReportAdapter(mFadaTestActivity,mFadaTestActivity.mSeriesReport.mReports,mFadaTestHandler,EquipMentManager.DEVICE_FADA);
+        mFadaTestActivity.deviceList.setAdapter(mFadaTestActivity.deviceReportAdapter);
+        mFadaTestActivity.userList.setAdapter(mFadaTestActivity.patientReportAdapter);
+        mFadaTestActivity.imfText.setText("("+ mFadaTestActivity.mSeriesReport.mName+","+ mFadaTestActivity.mSeriesReport.mSex+","+
+                mFadaTestActivity.mSeriesReport.mAge+"岁)");
+        mFadaTestActivity.headTime.setText(mFadaTestActivity.mSeriesReport.mSendTime.substring(0,10));
+        mFadaTestActivity.btnBack.setOnClickListener(mFadaTestActivity.doBacklistener);
+        mFadaTestActivity.btnGet.setOnClickListener(mFadaTestActivity.doGetDeviceData);
+        mFadaTestActivity.btnGive.setOnClickListener(mFadaTestActivity.doGaveData);
+        mFadaTestActivity.connectState.setOnClickListener(mFadaTestActivity.doConnectDevice);
+        mFadaTestActivity.deviceList.setOnItemClickListener(mFadaTestActivity.listDeviceListener);
+        mFadaTestActivity.btnPrint.setOnClickListener(mFadaTestActivity.printListener);
+        if(BluetoothSetManager.getInstance().blueToothAdapter.isEnabled() == true)
+        {
+            mFadaTestActivity.canConnected = false;
+            EquipMentManager.getInstance().connectFada(mFadaTestActivity,mFadaTestActivity.connectState);
+        }
+        else
+        {
+            mFadaTestActivity.canConnected = true;
+        }
+
+    }
+
+    @Override
+    public void Start() {
+
+    }
+
+    @Override
+    public void Resume() {
+
+    }
+
+    @Override
+    public void Pause() {
+
+    }
+
+    @Override
+    public void Destroy() {
+        BluetoothSetManager.getInstance().disConnectDevice();
+        mFadaTestActivity.unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    public void getDeviceData() {
+        if(mFadaTestActivity.connectState.getText().toString().equals(mFadaTestActivity.getString(R.string.device_state_connected)))
+        {
+            String getid = "";
+            for(int i = 0 ; i < mFadaTestActivity.tempGets.size() ; i++)
+            {
+                if(mFadaTestActivity.tempGets.get(i).isGet == false)
+                {
+                    getid = mFadaTestActivity.tempGets.get(i).mTempid;
+                    mFadaTestActivity.mTempGet = mFadaTestActivity.tempGets.get(i);
+                    break;
+                }
+            }
+            if(getid.length() != 0)
+            {
+                mFadaTestActivity.isGetting = true;
+                mFadaTestActivity.mAlertDialog = ViewUtils.creatDialogTowButton(mFadaTestActivity, mFadaTestActivity.getString(R.string.qtest_title_get_data_message),
+                        mFadaTestActivity.getString(R.string.qtest_title_get_data)+getid,mFadaTestActivity.getString(R.string.button_word_cancle),null,dismissListener);
+            }
+            else
+            {
+                ViewUtils.showMessage(mFadaTestActivity,mFadaTestActivity.getString(R.string.qtest_title_device_nodata));
+            }
+        }
+        else
+        {
+            ViewUtils.showMessage(mFadaTestActivity,mFadaTestActivity.getString(R.string.qtest_title_device_unconnect));
+        }
+
+    }
+
+    public DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener()
+    {
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            mFadaTestActivity.isGetting = false;
+        }
+    };
+
+    public void updataButtomImf() {
+        String ids = "";
+        String ids2 = "";
+        for(int i = 0 ;i <mFadaTestActivity.tempGets.size() ; i++)
+        {
+            if(mFadaTestActivity.tempGets.get(i).isGet == false)
+            {
+                boolean has = false;
+
+                for(int j = 0 ; j < mFadaTestActivity.mReports.size() ; j++)
+                {
+                    if(mFadaTestActivity.mReports.get(j).tempId.equals(mFadaTestActivity.tempGets.get(i).mTempid))
+                    {
+                        has = true;
+                        break;
+                    }
+                }
+                if(has == false)
+                {
+                    if(ids.length() == 0)
+                    {
+                        ids +=  mFadaTestActivity.tempGets.get(i).mTempid;
+                    }
+                    else
+                    {
+                        ids += ","+mFadaTestActivity.tempGets.get(i).mTempid;
+                    }
+                }
+            }
+            boolean has2 = false;
+            int count = mFadaTestActivity.tempGets.get(i).realcount;
+            for(int k = 0 ; k < mFadaTestActivity.mSeriesReport.mReports.size() ; k++)
+            {
+                if(mFadaTestActivity.mSeriesReport.mReports.get(k).tempId.equals(mFadaTestActivity.tempGets.get(i).mTempid) && mFadaTestActivity.mSeriesReport.mReports.get(k).type.equals(EquipMentManager.DEVICE_FADA))
+                {
+                    if(count >  0)
+                    {
+                        count--;
+                    }
+                    if(count == 0)
+                    {
+                        has2 = true;
+                        break;
+                    }
+                }
+            }
+            if(has2 == false)
+            {
+                if(ids2.length() == 0)
+                {
+                    ids2 +=  mFadaTestActivity.tempGets.get(i).mTempid;
+                }
+                else
+                {
+                    ids2 += ","+mFadaTestActivity.tempGets.get(i).mTempid;
+                }
+            }
+        }
+        mFadaTestActivity.buttomimf.setText(mFadaTestActivity.getString(R.string.qtest_buttom_imf_fada_get)+":"+ ids);
+        mFadaTestActivity.buttomimf2.setText(mFadaTestActivity.getString(R.string.qtest_buttom_imf_fada_give)+":"+ids2);
+    }
+
+    public void doGaveData() {
+        for(int i = 0 ; i < mFadaTestActivity.mReports.size() ; i++)
+        {
+            Report report = mFadaTestActivity.mReports.get(i);
+            if(report.isSelect)
+            {
+                mFadaTestActivity.mReports.remove(report);
+                report.isSelect = false;
+                i--;
+                mFadaTestActivity.mSeriesReport.mReports.add(report);
+            }
+        }
+        measureTempid();
+        updataButtomImf();
+        mFadaTestActivity.deviceReportAdapter.notifyDataSetChanged();
+        mFadaTestActivity.patientReportAdapter.notifyDataSetChanged();
+        DBHelper.getInstance(mFadaTestActivity).updataReport(mFadaTestActivity.mSeriesReport);
+        Intent intent = new Intent(TestCenterActivity.ACTION_UPDETE_REPORT_LIST);
+        intent.putExtra(EquipMentManager.REPORT_ID,mFadaTestActivity.mSeriesReport.mReportId);
+        mFadaTestActivity.mSeriesReport.updatacount = 0;
+        if(AppUtils.gotoMain(mFadaTestActivity) == false)
+        {
+            ReportAsks.reportAdd(mFadaTestActivity.mSeriesReport,mFadaTestHandler,mFadaTestActivity);
+        }
+        mFadaTestActivity.sendBroadcast(intent);
+
+    }
+
+    public void measureTempid()
+    {
+        mFadaTestActivity.tempGets.clear();
+        mFadaTestActivity.tempGets.addAll(DataPrase.getTempid(mFadaTestActivity.mSeriesReport.tempId,EquipMentManager.DEVICE_FADA,mFadaTestActivity.mSeriesReport,mFadaTestActivity.mReports));
+    }
+
+    public void doSelect(Report report) {
+        if(report.isSelect == false)
+        {
+            report.isSelect = true;
+        }
+        else
+        {
+            report.isSelect = false;
+        }
+        mFadaTestActivity.deviceReportAdapter.notifyDataSetChanged();
+    };
+
+    public void doDelete(Report report) {
+        mFadaTestActivity.mSeriesReport.mReports.remove(report);
+        mFadaTestActivity.mReports.add(report);
+        measureTempid();
+        updataButtomImf();
+        mFadaTestActivity.deviceReportAdapter.notifyDataSetChanged();
+        mFadaTestActivity.patientReportAdapter.notifyDataSetChanged();
+        DBHelper.getInstance(mFadaTestActivity).updataReport(mFadaTestActivity.mSeriesReport);
+        Intent intent = new Intent(TestCenterActivity.ACTION_UPDETE_REPORT_LIST);
+        mFadaTestActivity.mSeriesReport.updatacount = 0;
+        if(AppUtils.gotoMain(mFadaTestActivity) == false)
+        {
+            ReportAsks.reportAdd(mFadaTestActivity.mSeriesReport,mFadaTestHandler,mFadaTestActivity);
+        }
+
+        intent.putExtra(EquipMentManager.REPORT_ID,mFadaTestActivity.mSeriesReport.mReportId);
+        mFadaTestActivity.sendBroadcast(intent);
+
+    }
+
+    public void doConnectDevice()
+    {
+        if(mFadaTestActivity.connectState.getText().toString().equals(mFadaTestActivity.getString(R.string.device_state_disconnected))
+                && mFadaTestActivity.canConnected)
+        {
+
+            if(BluetoothSetManager.getInstance().blueToothAdapter.isEnabled() == false)
+            {
+                ViewUtils.showMessage(mFadaTestActivity,mFadaTestActivity.getString(R.string.device_bluetooth_error));
+            }
+            else
+            {
+                mFadaTestActivity.canConnected = false;
+                EquipMentManager.getInstance().connectFada(mFadaTestActivity,mFadaTestActivity.connectState);
+            }
+
+        }
+    }
+
+    public void startPrint()
+    {
+        if(mFadaTestActivity.mSeriesReport.mReports.size()>0)
+        ReportAsks.reportAdd(mFadaTestActivity.mSeriesReport,mFadaTestHandler,mFadaTestActivity);
+        Intent intent = new Intent(mFadaTestActivity, ReportPrintActivity.class);
+        intent.putExtra("report",mFadaTestActivity.mSeriesReport);
+//        intent.putExtra(EquipMentManager.REPORT_ID,DataPrase.praseReportJson(mFadaTestActivity.mSeriesReport));
+        mFadaTestActivity.startActivity(intent);
+    }
+
+}

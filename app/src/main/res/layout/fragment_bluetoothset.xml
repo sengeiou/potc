@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/teb_head_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/textclolr_title_blcak"
+            android:textSize="16dp"
+            android:text="@string/setting_title_bluetooth_head"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_wifi"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/head"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/txtname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/setting_title_bluetooth"
+            android:textColor="@color/textclolr_title_gray"
+            android:textSize="16dp" />
+
+        <Switch
+            android:id="@+id/btn_swich"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:switchMinWidth="20dp"
+            android:textOn=""
+            android:textOff=""
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#f5f5f6"/>
+    </RelativeLayout>
+
+</RelativeLayout>

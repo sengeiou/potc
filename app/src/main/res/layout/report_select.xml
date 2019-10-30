@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="#00000000">
+
+        <RelativeLayout
+            android:id="@+id/potc"
+            android:layout_width="242dp"
+            android:layout_height="242dp"
+            android:background="@drawable/btn_puple">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="#00000000">
+
+                <ImageView
+                    android:id="@+id/imgpotc"
+                    android:layout_width="142dp"
+                    android:layout_height="142dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/potc" />
+
+                <TextView
+                    android:id="@+id/txtpotc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgpotc"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:lines="1"
+                    android:text="@string/device_potc"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fada"
+            android:layout_width="242dp"
+            android:layout_height="242dp"
+            android:layout_toRightOf="@+id/potc"
+            android:layout_marginLeft="80dp"
+            android:background="@drawable/btn_blue">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="#00000000">
+
+                <ImageView
+                    android:id="@+id/imgfada"
+                    android:layout_width="142dp"
+                    android:layout_height="142dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/potc" />
+
+                <TextView
+                    android:id="@+id/txtfada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgfada"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:lines="1"
+                    android:text="@string/device_fada"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

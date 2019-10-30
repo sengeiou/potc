@@ -1,0 +1,209 @@
+package com.poct.android.view.adapter;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.poct.R;
+import com.poct.android.entity.SeriesReport;
+import com.poct.android.handler.TestCenterHandler;
+import com.poct.android.utils.AppUtils;
+
+import java.util.ArrayList;
+
+public class SeriasReportAdapter extends BaseAdapter {
+
+    public LayoutInflater mInflater;
+    public Context mContext;
+    public Handler mHandler;
+    public ArrayList<SeriesReport> mSeriesReports;
+
+    public SeriasReportAdapter(Context context, ArrayList<SeriesReport> mSeriesReports, Handler mHandler)
+    {
+        this.mContext = context;
+        this.mHandler = mHandler;
+        this.mSeriesReports =  mSeriesReports;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public int getCount() {
+        return mSeriesReports.size();
+    }
+
+    @Override
+    public SeriesReport getItem(int position) {
+        return mSeriesReports.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        SeriesReport mSeriesReport = mSeriesReports.get(position);
+        ViewHolder mViewHolder;
+        if( null == convertView )
+        {
+            convertView =  mInflater.inflate( R.layout.item_seriasreport, null );
+            mViewHolder = new ViewHolder();
+            mViewHolder.txtName = (TextView) convertView.findViewById(R.id.txtpname);
+            mViewHolder.txtSex = (TextView) convertView.findViewById( R.id.txtpsex );
+            mViewHolder.txtAge = (TextView) convertView.findViewById( R.id.txtpage );
+            mViewHolder.txtSender = (TextView) convertView.findViewById( R.id.txtsender );
+            mViewHolder.txtTime = (TextView) convertView.findViewById( R.id.txttime );
+            mViewHolder.txtCount = (TextView) convertView.findViewById( R.id.txtcount );
+            mViewHolder.txtSendTime = (TextView) convertView.findViewById( R.id.txttimes );
+            mViewHolder.layerOper = convertView.findViewById(R.id.txtbuttons);
+            convertView.setTag(mViewHolder);
+        }
+        mViewHolder = (ViewHolder) convertView.getTag();
+        mViewHolder.txtName.setText(mSeriesReport.mName);
+        mViewHolder.txtSex.setText(mSeriesReport.mSex);
+        mViewHolder.txtAge.setText(mSeriesReport.mAge);
+        mViewHolder.txtSender.setText(mSeriesReport.mSender);
+        mViewHolder.txtTime.setText(mSeriesReport.mSendTime);
+        mViewHolder.txtCount.setText(String.valueOf(mSeriesReport.mReports.size()));
+        if(mSeriesReport.mSendTime.length() > 10)
+        mViewHolder.txtSendTime.setText(mSeriesReport.mSendTime.substring(0,16));
+        else
+            mViewHolder.txtSendTime.setText(mSeriesReport.mSendTime);
+        measureOper(mSeriesReport,mViewHolder.layerOper);
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        private TextView txtName;
+        private TextView txtSex;
+        private TextView txtAge;
+        private TextView txtSender;
+        private TextView txtTime;
+        private TextView txtCount;
+        private TextView txtSendTime;
+        private RelativeLayout layerOper;
+    }
+
+    private void measureOper(SeriesReport mSeriesReport,RelativeLayout layer) {
+        layer.removeAllViews();
+        if(mSeriesReport.mSendTime.substring(0,10).equals(AppUtils.getDate())) {
+            if(mSeriesReport.tempId.length() == 0)
+            {
+
+                View view = mInflater.inflate(R.layout.too_button,null);
+                TextView textView1 = view.findViewById(R.id.btn1);
+                textView1.setText(mContext.getString(R.string.button_add));
+                textView1.setTag(mSeriesReport);
+                textView1.setOnClickListener(addListener);
+                TextView textView2 = view.findViewById(R.id.btn2);
+                textView2.setText(mContext.getString(R.string.button_delete));
+                textView2.setTag(mSeriesReport);
+                textView2.setOnClickListener(deleteListener);
+                layer.addView(view);
+            }
+            else
+            {
+                View view = mInflater.inflate(R.layout.too_button,null);
+                TextView textView1 = view.findViewById(R.id.btn1);
+                textView1.setText(mContext.getString(R.string.button_edit));
+                textView1.setTag(mSeriesReport);
+                textView1.setOnClickListener(changeListener);
+                TextView textView2 = view.findViewById(R.id.btn2);
+                textView2.setText(mContext.getString(R.string.button_more));
+                textView2.setTag(mSeriesReport);
+                textView2.setOnClickListener(moreListener);
+                layer.addView(view);
+            }
+        }
+        else {
+            if(mSeriesReport.mReports.size() == 0)
+            {
+                View view = mInflater.inflate(R.layout.one_button,null);
+                TextView textView1 = view.findViewById(R.id.btn1);
+                textView1.setText(mContext.getString(R.string.button_delete));
+                textView1.setTag(mSeriesReport);
+                textView1.setOnClickListener(deleteListener);
+                layer.addView(view);
+            }
+            else
+            {
+                View view = mInflater.inflate(R.layout.too_button,null);
+                TextView textView1 = view.findViewById(R.id.btn1);
+                textView1.setText(mContext.getString(R.string.button_detial));
+                textView1.setTag(mSeriesReport);
+                textView1.setOnClickListener(detialListener);
+                TextView textView2 = view.findViewById(R.id.btn2);
+                textView2.setText(mContext.getString(R.string.button_delete));
+                textView2.setTag(mSeriesReport);
+                textView2.setOnClickListener(deleteListener);
+                layer.addView(view);
+            }
+
+        }
+    }
+
+    public View.OnClickListener deleteListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+
+            Message message = new Message();
+            message.what = TestCenterHandler.EVENT_DELETE;
+            message.obj = v.getTag();
+            mHandler.sendMessage(message);
+        }
+    };
+
+    public View.OnClickListener detialListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Message message = new Message();
+            message.what = TestCenterHandler.EVENT_DETIAL;
+            message.obj = v.getTag();
+            mHandler.sendMessage(message);
+        }
+    };
+
+    public View.OnClickListener addListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Message message = new Message();
+            message.what = TestCenterHandler.EVENT_ADD;
+            message.obj = v.getTag();
+            mHandler.sendMessage(message);
+        }
+    };
+
+    public View.OnClickListener changeListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Message message = new Message();
+            message.what = TestCenterHandler.EVENT_CHANGE;
+            message.obj = v.getTag();
+            mHandler.sendMessage(message);
+        }
+    };
+
+
+    public View.OnClickListener moreListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Message message = new Message();
+            message.what = TestCenterHandler.EVENT_MORE;
+            message.obj = v.getTag();
+            mHandler.sendMessage(message);
+        }
+    };
+}

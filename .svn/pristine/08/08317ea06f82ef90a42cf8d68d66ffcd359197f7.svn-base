@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId 'com.poct'
+        minSdkVersion 21
+        targetSdkVersion 22
+        versionCode 14
+        versionName '1.0.4'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a"
+        }
+        signingConfig signingConfigs.debug
+    }
+    signingConfigs {
+        release {
+            storeFile file('F:/workspace/work/poctapp/signedapk/systemm.jks')
+            storePassword '123456'
+            keyAlias 'system1'
+            keyPassword '123456'
+        }
+        debug {
+            storeFile file('F:/workspace/work/poctapp/signedapk/systemm.jks')
+            storePassword '123456'
+            keyAlias 'system1'
+            keyPassword '123456'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildToolsVersion '27.0.3'
+    productFlavors {
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'com.google.zxing:core:3.3.2'
+    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    compile 'org.apache.httpcomponents:httpcore:4.4.4'
+    implementation files('libs/yf_a64_api.jar')
+}
+
+repositories {
+    mavenCentral()
+}

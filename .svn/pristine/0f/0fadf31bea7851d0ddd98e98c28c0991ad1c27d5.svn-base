@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        />
+
+    <RelativeLayout
+        android:id= "@+id/layer2"
+        android:layout_width="800dp"
+        android:layout_height="500dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_report_creat">
+
+        <RelativeLayout
+            android:id="@+id/head"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_report_creat_head">
+
+            <RelativeLayout
+                android:id="@+id/layertitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="18dp"
+                android:background="#00000000">
+
+                <ImageView
+                    android:id="@+id/imgcreat"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/testcreat" />.
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/imgcreat"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/test_center_add"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layerclose"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="18dp"
+                android:background="#00000000">
+
+                <ImageView
+                    android:id="@+id/imgclose"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/colse" />.
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layername"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/head"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/nametitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_name"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayername"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/nametitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtname"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layerage"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/head"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/layername"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/agetitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_age"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayerage"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/agetitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtage"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="3"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layersex"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layername"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/sextitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_sex"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayersex"
+                android:layout_width="202dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/sextitle"
+                android:background="#00000000">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sex_rg"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="男"
+                        android:id="@+id/male_rb"/>
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical|left"
+                        android:text="男"
+                        android:textColor="@color/textclolr_title_gray"
+                        android:textSize="19dp" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="女"
+                        android:id="@+id/famale_rb"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical|left"
+                        android:text="女"
+                        android:textColor="@color/textclolr_title_gray"
+                        android:textSize="19dp" />
+                </RadioGroup>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layersender"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/layername"
+            android:layout_toRightOf="@+id/layername"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/pid"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_id"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayerid"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/pid"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtid"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:maxLength="18"
+                    android:inputType="number"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layercnum"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layersex"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/cnumtitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_cnum"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayercnum"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/cnumtitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtcnum"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:maxLength="14"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layerhnum"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/layersex"
+            android:layout_toRightOf="@+id/layername"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/hnumtitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_hnum"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayerhnum"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/hnumtitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxthnum"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:maxLength="14"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layerdep"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layercnum"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/deptitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_dep"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayerdep"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/deptitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtdep"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layerbad"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/layercnum"
+            android:layout_toRightOf="@+id/layername"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/badtitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_bad"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayerbad"
+                android:layout_width="202dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/badtitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtbad"
+                    android:layout_width="190dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="center_vertical|left"
+                    android:maxLines="1"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layerdes"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layerdep"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/destitle"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_des"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayerdes"
+                android:layout_width="202dp"
+                android:layout_height="182dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/destitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtdes"
+                    android:layout_width="190dp"
+                    android:layout_height="180dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="top|left"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layermemo"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/layerdep"
+            android:layout_toRightOf="@+id/layerdes"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/memotitle"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/test_center_p_memo"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="19dp" />
+
+            <RelativeLayout
+                android:id="@+id/elayermemo"
+                android:layout_width="202dp"
+                android:layout_height="182dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/memotitle"
+                android:background="@drawable/bg_test">
+
+                <EditText
+                    android:id="@+id/etxtmemo"
+                    android:layout_width="200dp"
+                    android:layout_height="180dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:gravity="top|left"
+                    android:text=""
+                    android:textColor="@color/textclolr_title_gray"
+                    android:textSize="19dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/layermemo"
+            android:background="#d7d7d7" />
+
+        <RelativeLayout
+            android:id="@+id/end"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/line"
+            android:layout_marginTop="9dp"
+            android:background="#00000000">
+
+            <TextView
+                android:id="@+id/btnok"
+                android:layout_width="80dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/button_word_ok"
+                android:background="@drawable/btn_green"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/btncancle"
+                android:layout_width="80dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/btnok"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/btn_empty"
+                android:text="@string/button_word_cancle"
+                android:textColor="@color/textclolr_title_gray"
+                android:textSize="16dp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

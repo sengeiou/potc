@@ -1,0 +1,613 @@
+package com.poct.android.utils;
+
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.NinePatch;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.poct.R;
+import com.poct.android.view.PoctApplication;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+public class AppUtils {
+
+    public static final int TAKE_PHOTO = 60000;
+    public static final int DO_SCAN = 60001;
+    public static final int FAIL_TYPE_DOCUMEN = 200;
+    public static final int FILE_TYPE_UNKNOW = 300;
+    public static final int FILE_TYPE_PICTURE = 301;
+    public static final int FILE_TYPE_TXT = 302;
+    public static final int FILE_TYPE_VIDEO = 303;
+    public static final int FILE_TYPE_PPT = 304;
+    public static final int FILE_TYPE_WORD = 305;
+    public static final int FILE_TYPE_EXL = 306;
+    public static final int FILE_TYPE_PDF = 307;
+    public static final int FILE_TYPE_MUSIC = 308;
+    public static final int FILE_TYPE_HTML = 309;
+    public static final int FILE_TYPE_APK = 310;
+
+    public static String getguid() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString().toUpperCase();
+
+    }
+
+    public static void getPermission(String permission, Activity context,int repuestid,Handler mHandler)
+    {
+        if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                context.requestPermissions(new String[]{permission},
+                        repuestid);
+            }
+            else
+            {
+                mHandler.sendEmptyMessage(repuestid);
+            }
+        } else {
+
+            mHandler.sendEmptyMessage(repuestid);
+        }
+    }
+
+    public static Dialog createLoadingDialog(Context context, String msg) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.loading_dialog2, null);// 得到加载view
+        LinearLayout layout = (LinearLayout) v.findViewById(R.id.layout);// 加载布局
+        // main.xml中的ImageView
+        ImageView spaceshipImage = (ImageView) v.findViewById(R.id.img);
+        TextView tipTextView = (TextView) v.findViewById(R.id.text);// 提示文字
+        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_animation);
+        // 使用ImageView显示动画
+        spaceshipImage.startAnimation(hyperspaceJumpAnimation);
+        // 加载动画
+//		Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(
+//				context, R.anim.load_animation);
+        // 使用ImageView显示动画
+//		spaceshipImage.startAnimation(hyperspaceJumpAnimation);
+        //tipTextView.setText(msg);// 设置加载信息
+
+        Dialog loadingDialog = new Dialog(context, R.style.loading_dialog1);// 创建自定义样式dialog
+
+        loadingDialog.setCancelable(false);// 不可以用“返回键”取消
+        loadingDialog.setContentView(v, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局
+        return loadingDialog;
+
+    }
+
+    public static final DisplayMetrics getWindowInfo(Context context) {
+        DisplayMetrics metric = new DisplayMetrics();
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metric);
+
+        return metric;
+    }
+
+
+    public static boolean strlen(String str) {
+        if (str == null || str.length() <= 0) {
+            return false;
+        }
+
+        int len = 0;
+
+        char c;
+        for (int i = str.length() - 1; i >= 0; i--) {
+            c = str.charAt(i);
+            if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+                // 字母, 数字
+                len++;
+            } else {
+                if (Character.isLetter(c)) { // 中文
+                    len += 2;
+                } else { // 符号或控制字符
+                    len++;
+                }
+            }
+        }
+
+        if (len > 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void copyFile(String oldPath, String newPath) {
+        try {
+            int bytesum = 0;
+            int byteread = 0;
+            File oldfile = new File(oldPath);
+            if (oldfile.exists()) { //文件存在时
+                InputStream inStream = new FileInputStream(oldPath); //读入原文件
+                FileOutputStream fs = new FileOutputStream(newPath);
+                byte[] buffer = new byte[1444];
+                int length;
+                while ((byteread = inStream.read(buffer)) != -1) {
+                    bytesum += byteread; //字节数 文件大小
+                    System.out.println(bytesum);
+                    fs.write(buffer, 0, byteread);
+                }
+                inStream.close();
+            }
+        } catch (Exception e) {
+            System.out.println("复制单个文件操作出错");
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static String getDate() {
+        Calendar c = Calendar.getInstance();
+        String data = String.format("%04d-%02d-%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                c.get(Calendar.DAY_OF_MONTH));
+        return data;
+    }
+
+    public static String getDate2() {
+        Calendar c = Calendar.getInstance();
+        String data = String.format("%04d年%02d月%02d日", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                c.get(Calendar.DAY_OF_MONTH));
+        return data;
+    }
+
+    public static String getDate3() {
+        Calendar c = Calendar.getInstance();
+        String data = String.format("%04d/%02d/%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                c.get(Calendar.DAY_OF_MONTH));
+        return data;
+    }
+
+    public static String getDate4() {
+        Calendar c = Calendar.getInstance();
+        String data = String.format("%04d%02d%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                c.get(Calendar.DAY_OF_MONTH));
+        return data;
+    }
+
+    public static String getTime() {
+        Calendar c = Calendar.getInstance();
+        String time = String.format("%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+        return time;
+    }
+
+    public static String getTime12() {
+        Calendar c = Calendar.getInstance();
+        int apm = c.get(Calendar.AM_PM);
+        String time = "";
+        if(apm == 0)
+         time = String.format("上午 %02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE));
+        else
+            time = String.format("下午 %02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE));
+        return time;
+    }
+
+    public static String getTimeSecond() {
+        Calendar c = Calendar.getInstance();
+        String time = String.format("%02d:%02d:%02d", c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                c.get(Calendar.SECOND));
+        return time;
+    }
+
+    public static String getTimeSecond12() {
+        Calendar c = Calendar.getInstance();
+        int apm = c.get(Calendar.AM_PM);
+        String time = "";
+        if(apm == 0)
+            time = String.format("上午 %02d:%02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE),c.get(Calendar.SECOND));
+        else
+            time = String.format("下午 %02d:%02d:%02d", c.get(Calendar.HOUR), c.get(Calendar.MINUTE),c.get(Calendar.SECOND));
+        return time;
+    }
+
+    public static String getWeek() {
+
+        String Week = "";
+        Calendar c = Calendar.getInstance();
+        if (c.get(Calendar.DAY_OF_WEEK) == 1) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_sun);
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 2) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_mun);
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 3) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_tus);
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 4) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_wen);
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 5) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_ths);
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 6) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_fri);
+        }
+        if (c.get(Calendar.DAY_OF_WEEK) == 7) {
+            Week = PoctApplication.mApp.getString(R.string.keyword_sat);
+        }
+        return Week;
+    }
+
+
+    public static String getDateAndTimeCode() {
+        Calendar c = Calendar.getInstance();
+        String data = String.format("%04d%02d%02d%02d%02d%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
+                c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                c.get(Calendar.SECOND));
+        return data;
+    }
+
+
+    public static Uri takePhoto(Activity mContext,int code,String path)
+    {
+        Uri pathUri = getOutputMediaFileUri(path);
+        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, pathUri);
+        mContext.startActivityForResult(openCameraIntent, code);
+        return pathUri;
+    }
+
+
+    public static Uri getOutputMediaFileUri(String ipath) {
+        File picDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String path = ipath + "/" + timeStamp + ".jpg";
+        File videoFile = new File(path);
+        return Uri.fromFile(videoFile);
+    }
+
+
+
+    public static Bitmap decodeBitmap2(String mfile, int w, int h) {
+
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(mfile, options);
+            int size = calculateInSampleSize(options, w, h);
+            options.inSampleSize = size;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            FileInputStream is = new FileInputStream(mfile);
+            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(is.getFD(), null, options);
+            return bitmap;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options,
+                                            int reqWidth, int reqHeight) {
+        // 源图片的高度和宽度
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            // 计算出实际宽高和目标宽高的比率
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
+            // 一定都会大于等于目标的宽和高。
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
+    }
+
+    public static void showImage(final Activity mContext, final ImageView mImage, final Bitmap in, final int bgres) {
+
+        Bitmap bitmap_bg = BitmapFactory.decodeResource(mContext.getResources(), bgres);
+        Bitmap bitmap_in = in;
+        final Bitmap bp = getRoundCornerImage(bitmap_bg, bitmap_in);
+        final Bitmap bp2 = getShardImage(bitmap_bg, bp);
+        mImage.setImageBitmap(bp2);
+    }
+
+    public static Bitmap getRoundCornerImage(Bitmap bitmap_bg, Bitmap bitmap_in) {
+        int basewidth = 0;
+        int baseheight = 0;
+        if (bitmap_in.getHeight() > bitmap_in.getWidth() + 100) {
+            basewidth = PoctApplication.mApp.mScreenDefine.ScreenWidth * 1 / 5;
+            baseheight = bitmap_in.getHeight() * basewidth / bitmap_in.getWidth();
+        } else {
+            basewidth = PoctApplication.mApp.mScreenDefine.ScreenWidth * 2 / 5;
+            baseheight = bitmap_in.getHeight() * basewidth / bitmap_in.getWidth();
+        }
+
+
+        Bitmap roundConcerImage = Bitmap.createBitmap(basewidth, baseheight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(roundConcerImage);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, basewidth, baseheight);
+        Rect rectF = new Rect(0, 0, bitmap_in.getWidth(), bitmap_in.getHeight());
+        paint.setAntiAlias(true);
+        NinePatch patch = new NinePatch(bitmap_bg, bitmap_bg.getNinePatchChunk(), null);
+        patch.draw(canvas, rect);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap_in, rectF, rect, paint);
+        return roundConcerImage;
+    }
+
+    public static Bitmap getShardImage(Bitmap bitmap_bg, Bitmap bitmap_in) {
+
+        int basewidth = 0;
+        int baseheight = 0;
+        if (bitmap_in.getHeight() > bitmap_in.getWidth() + 100) {
+            basewidth = PoctApplication.mApp.mScreenDefine.ScreenWidth * 1 / 5;
+            baseheight = bitmap_in.getHeight() * basewidth / bitmap_in.getWidth();
+            if (basewidth > bitmap_in.getWidth()) {
+                basewidth = bitmap_in.getWidth();
+                baseheight = bitmap_in.getHeight();
+            }
+        } else {
+            basewidth = PoctApplication.mApp.mScreenDefine.ScreenWidth * 2 / 5;
+            baseheight = bitmap_in.getHeight() * basewidth / bitmap_in.getWidth();
+            if (basewidth > bitmap_in.getWidth()) {
+                basewidth = bitmap_in.getWidth();
+                baseheight = bitmap_in.getHeight();
+            }
+        }
+
+        Bitmap roundConcerImage = Bitmap.createBitmap(basewidth, baseheight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(roundConcerImage);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, basewidth, baseheight);
+        paint.setAntiAlias(true);
+        NinePatch patch = new NinePatch(bitmap_bg, bitmap_bg.getNinePatchChunk(), null);
+        patch.draw(canvas, rect);
+        Rect rect2 = new Rect(2, 2, basewidth - 2, baseheight - 2);
+        canvas.drawBitmap(bitmap_in, rect, rect2, paint);
+        return roundConcerImage;
+    }
+
+    public static int getFileType(String aname) {
+        String name = "";
+        if (aname != null) {
+            name = aname.toLowerCase();
+        }
+
+        if (name.endsWith(".rmvb") || name.endsWith(".mp4") || name.endsWith(".wmv") || name.endsWith(".avi")
+                || name.endsWith(".flv")) {
+            return FILE_TYPE_VIDEO;
+        } else if (name.endsWith(".mp3") || name.endsWith(".wav")) {
+            return FILE_TYPE_MUSIC;
+        } else if (name.endsWith(".txt")) {
+            return FILE_TYPE_TXT;
+        } else if (name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".gif")
+                || name.endsWith(".jpeg") || name.endsWith(".bmp") || name.endsWith(".pcx")
+                || name.endsWith(".dxf") || name.endsWith(".wmf") || name.endsWith(".tga")) {
+            return FILE_TYPE_PICTURE;
+        } else if (name.endsWith(".doc") || name.endsWith(".docx")) {
+            return FILE_TYPE_WORD;
+        } else if (name.endsWith(".xls") || name.endsWith(".xlsx")) {
+            return FILE_TYPE_EXL;
+        } else if (name.endsWith(".ppt") || name.endsWith(".pptx")) {
+            return FILE_TYPE_PPT;
+        } else if (name.endsWith(".pdf")) {
+            return FILE_TYPE_PDF;
+        } else if (name.endsWith(".html")) {
+            return FILE_TYPE_HTML;
+        } else if (name.endsWith(".apk")) {
+            return FILE_TYPE_APK;
+        } else {
+            return FILE_TYPE_UNKNOW;
+        }
+
+    }
+
+
+    public static String getSizeText(long size) {
+        String s1 = "";
+        if (size / 1024 / 1024 > 0) {
+            if (size / 1024 % 1024 * 100 / 1024 > 9) {
+                s1 = String.valueOf(size / 1024 / 1024) + "." + String.valueOf(size / 1024 % 1024 * 100 / 1024) + "M";
+            } else {
+                s1 = String.valueOf(size / 1024 / 1024) + "." + "0" + String.valueOf(size / 1024 % 1024 * 100 / 1024)
+                        + "M";
+            }
+        } else if (size / 1024 > 0) {
+            if (size % 1024 * 100 / 1024 > 9) {
+                s1 = String.valueOf(size / 1024) + "." + String.valueOf(size % 1024 * 100 / 1024) + "K";
+            } else {
+                s1 = String.valueOf(size / 1024) + "." + "0" + String.valueOf(size % 1024 * 100 / 1024) + "K";
+            }
+        } else if (size > 0) {
+            s1 = String.valueOf(size) + "B";
+        } else {
+            s1 = "0B";
+        }
+        return s1;
+    }
+
+    public static boolean chatShowTime(String begin, String end) {
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date d1 = df.parse(end);
+            Date d2 = df.parse(begin);
+            long diff = d1.getTime() - d2.getTime();//这样得到的差值是微秒级别
+            if (diff > 60 * 1000 * 3) {
+                return true;
+            } else
+                return false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    public static int daysBetween(String smdate, String bdate) {
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sdf.parse(smdate));
+            long time1 = cal.getTimeInMillis();
+            cal.setTime(sdf.parse(bdate));
+            long time2 = cal.getTimeInMillis();
+            long between_days = (time2 - time1) / (1000 * 3600 * 24);
+            return Integer.parseInt(String.valueOf(between_days));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static String measureAskTime(String time) {
+        String date = time.replaceAll("-","");
+        return date;
+    }
+
+    public static String measureDeteForm(String time)
+    {
+        if(time.length() > 10)
+        {
+            if(time.substring(0,10).equals(getDate()))
+            {
+                return "今天"+time.substring(11,time.length());
+            }
+            else if(daysBetween(time.substring(0,10),getDate()) == -1)
+            {
+                return "昨天"+time.substring(11,time.length());
+            }
+            else{
+                return time;
+            }
+        }
+        else
+        {
+            if(time.substring(0,10).equals(getDate()))
+            {
+                return "今天";
+            }
+            else if(daysBetween(time.substring(0,10),getDate()) == -1)
+            {
+                return "昨天";
+            }
+            else{
+                return time;
+            }
+        }
+
+    }
+
+
+    public static boolean isAppAlive(Context context, String packageName) {
+        ActivityManager activityManager =
+                (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> processInfos
+                = activityManager.getRunningAppProcesses();
+        List<ActivityManager.RunningTaskInfo> task_info = activityManager
+                .getRunningTasks(20);
+        String className = "";
+        for (int i = 0; i < task_info.size(); i++) {
+            if (packageName.equals(task_info.get(i).topActivity.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    public static Calendar getCalendar(String time)
+    {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+
+            c.setTime(format.parse(time+":00"));
+
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return c;
+    }
+
+    public static boolean checkApkExist(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName))
+            return false;
+        try {
+            context.getPackageManager().getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    public static String bytesToHexString(byte[] bytes) {
+        String result = "";
+        for (int i = 0; i < bytes.length; i++) {
+            String hexString = Integer.toHexString(bytes[i] & 0xFF);
+            if (hexString.length() == 1) {
+                hexString = '0' + hexString;
+            }
+            result += hexString.toUpperCase();
+        }
+        return result;
+    }
+
+    public static boolean measureBefore(String begin, String end) {
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date d1 = df.parse(end);
+            Date d2 = df.parse(begin);
+            long diff = d1.getTime() - d2.getTime();//这样得到的差值是微秒级别
+            if (d1.getTime() >= d2.getTime()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}

@@ -1,0 +1,58 @@
+package com.poct.android.handler;
+
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+
+import com.poct.R;
+import com.poct.android.manager.PrintManager;
+import com.poct.android.utils.ViewUtils;
+import com.poct.android.view.activity.ReportPrintActivity;
+
+import java.lang.ref.WeakReference;
+
+public class ReportPrintHandler extends Handler {
+
+    public static final int CREAT_PRINT_VIEW = 30700;
+    public static final int CREAT_PRINT_VIEW_START = 30701;
+
+    WeakReference<ReportPrintActivity> mActivity;
+
+    public ReportPrintHandler(ReportPrintActivity mReportPrintActivity) {
+        mActivity = new WeakReference<ReportPrintActivity>(mReportPrintActivity);
+    }
+
+    @Override
+    public void handleMessage(Message msg) {
+        ReportPrintActivity theActivity = mActivity.get();
+        Intent intent = new Intent();
+        switch (msg.what) {
+            case PrintManager.SEND_PRINT_INIT:
+                ViewUtils.showMessage(theActivity,theActivity.getString(R.string.print_message_init));
+                break;
+            case PrintManager.SEND_DATA_PRINT:
+                ViewUtils.showMessage(theActivity,theActivity.getString(R.string.print_message_send));
+                break;
+            case PrintManager.SEND_SUCCESS:
+                theActivity.waitDialog.hide();
+                theActivity.printsetting = false;
+                ViewUtils.showMessage(theActivity,theActivity.getString(R.string.print_message_send_success));
+                break;
+            case PrintManager.SEND_FAIL:
+                theActivity.waitDialog.hide();
+                ViewUtils.showMessage(theActivity,theActivity.getString(R.string.print_message_send_fail));
+                break;
+            case PrintManager.NONE_PRINT:
+                theActivity.waitDialog.hide();
+                ViewUtils.showMessage(theActivity,theActivity.getString(R.string.error_no_print));
+                break;
+            case CREAT_PRINT_VIEW:
+                theActivity.mReportPrintPresenter.startPrint();
+                break;
+            case CREAT_PRINT_VIEW_START:
+                theActivity.mReportPrintPresenter.creatView();
+                break;
+        }
+
+    }
+}

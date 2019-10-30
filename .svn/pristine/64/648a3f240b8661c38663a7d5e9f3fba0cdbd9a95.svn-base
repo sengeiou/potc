@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/toolBarBgColor">
+
+    <RelativeLayout
+        android:id="@+id/layertime"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="50dp"
+        android:background="#00000000">
+
+        <TextView
+            android:id="@+id/txttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center_vertical|center_horizontal"
+            android:lines="1"
+            android:text="23:23:23"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="85dp" />
+
+        <TextView
+            android:id="@+id/txttime1"
+            android:layout_width="wrap_content"
+            android:layout_height="85dp"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center_vertical|center_horizontal"
+            android:lines="1"
+            android:text=""
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            android:textSize="54dp" />
+
+        <TextView
+            android:id="@+id/txtdete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txttime"
+            android:layout_marginTop="0dp"
+            android:background="#00000000"
+            android:gravity="center_vertical|left"
+            android:lines="1"
+            android:text="2018/04/06"
+            android:includeFontPadding="false"
+            android:textColor="@color/white"
+            android:textSize="37dp" />
+
+        <TextView
+            android:id="@+id/txtweek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txttime"
+            android:layout_marginTop="0dp"
+            android:layout_alignParentRight="true"
+            android:background="#00000000"
+            android:gravity="center_vertical|right"
+            android:lines="1"
+            android:includeFontPadding="false"
+            android:text="星期五"
+            android:textColor="@color/white"
+            android:textSize="37dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/funreport"
+        android:layout_width="472dp"
+        android:layout_height="472dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/layertime"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="28dp"
+        android:background="#7ff69e">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="#00000000">
+
+            <ImageView
+                android:id="@+id/imgreport"
+                android:layout_width="173dp"
+                android:layout_height="197dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/report" />
+
+            <TextView
+                android:id="@+id/txtreport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgreport"
+                android:layout_marginTop="25dp"
+                android:background="#00000000"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical|center_horizontal"
+                android:lines="1"
+                android:text="检测报告"
+                android:includeFontPadding="false"
+                android:textColor="@color/white"
+                android:textSize="40dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/funtest"
+        android:layout_width="472dp"
+        android:layout_height="472dp"
+        android:layout_below="@+id/layertime"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="28dp"
+        android:layout_toRightOf="@+id/funreport"
+        android:background="#f6b37f">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="#00000000">
+
+            <ImageView
+                android:id="@+id/imgtest"
+                android:layout_width="173dp"
+                android:layout_height="197dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/test" />
+
+            <TextView
+                android:id="@+id/txttest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imgtest"
+                android:layout_marginTop="25dp"
+                android:background="#00000000"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical|center_horizontal"
+                android:lines="1"
+                android:text="检测中心"
+                android:textColor="@color/white"
+                android:textSize="40dp" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layersetting"
+        android:layout_width="65dp"
+        android:layout_height="472dp"
+        android:layout_below="@+id/layertime"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="28dp"
+        android:layout_toRightOf="@+id/funtest"
+        android:background="@drawable/bg_setting_bar">
+
+        <ImageView
+            android:id="@+id/iconwifi"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"
+            android:src="@drawable/tool_badwifi">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/iconaudio"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/iconwifi"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/tool_voice">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/iconsetting"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/iconaudio"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/tool_setting">
+        </ImageView>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imagelogout"
+        android:layout_width="87dp"
+        android:layout_height="87dp"
+        android:layout_below="@+id/layertime"
+        android:layout_marginLeft="69dp"
+        android:layout_marginTop="456dp"
+        android:layout_toRightOf="@+id/funtest"
+        android:background="@drawable/quit">
+    </ImageView>
+
+    <RelativeLayout
+        android:id="@+id/autio_setting"
+        android:layout_width="178dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/layertime"
+        android:layout_marginRight="148dp"
+        android:layout_marginTop="140dp"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible"
+        android:background="@drawable/bg_setting_bar">
+
+        <SeekBar
+            android:id="@+id/seekbar_sys_audio_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/txt_sys_audio_level"
+            android:max="1000"
+            android:maxHeight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:progressDrawable="@drawable/shape_seek_progress_bg"
+            android:thumb="@drawable/shape_seek_thumb"
+            android:thumbOffset="5dp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imghead"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/userhead">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/txtname"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imghead"
+        android:layout_marginTop="10dp"
+        android:background="#00000000"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:lines="1"
+        android:text="江南社区"
+        android:textColor="@color/white"
+        android:textSize="25dp" />
+
+</RelativeLayout>

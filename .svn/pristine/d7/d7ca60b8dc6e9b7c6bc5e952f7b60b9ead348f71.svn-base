@@ -1,0 +1,65 @@
+package com.poct.android.handler;
+
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+
+import com.poct.android.view.activity.MainActivity;
+
+import java.lang.ref.WeakReference;
+
+public class MainHandler extends Handler {
+
+    public static final int TIME_UPDATE = 30100;
+    public static final int DETE_UPDATE = 30101;
+    public static final int WEEK_UPDATE = 30102;
+    public static final int WIFI_CLOSE = 30103;
+    public static final int WIFI_OPEN = 30104;
+    public static final int WIFI_UPDATA = 30105;
+    public static final int WIFI_UPDATA_ALWAYS = 30110;
+    public static final int WIFI_CONNECT_SUCCESS = 30106;
+    public static final int WIFI_CONNECT_FAIL = 30107;
+    public static final int WIFI_CONNECT_ING = 30108;
+    public static final int ALL_UPDATE = 30109;
+    WeakReference<MainActivity> mActivity;
+
+    public MainHandler(MainActivity mMainActivity) {
+        mActivity = new WeakReference<MainActivity>(mMainActivity);
+    }
+
+    @Override
+    public void handleMessage(Message msg) {
+        MainActivity theActivity = mActivity.get();
+        Intent intent = new Intent();
+        switch (msg.what) {
+            case TIME_UPDATE:
+                theActivity.mMainPresenter.updataTime();
+                break;
+            case DETE_UPDATE:
+                theActivity.mMainPresenter.updataDete();
+                break;
+            case WEEK_UPDATE:
+                theActivity.mMainPresenter.updataWeek();
+                break;
+            case ALL_UPDATE:
+                theActivity.mMainPresenter.updataTime();
+                theActivity.mMainPresenter.updataDete();
+                theActivity.mMainPresenter.updataWeek();
+//                theActivity.mMainPresenter.updataAudio();
+                theActivity.mMainPresenter.updataWifi();
+                break;
+            case WIFI_CLOSE:
+            case WIFI_OPEN:
+            case WIFI_CONNECT_FAIL:
+            case WIFI_CONNECT_SUCCESS:
+            case WIFI_CONNECT_ING:
+            case WIFI_UPDATA:
+                theActivity.mMainPresenter.updataWifi();
+                break;
+            case WIFI_UPDATA_ALWAYS:
+                theActivity.mMainPresenter.updataWifi2();
+                break;
+        }
+
+    }
+}

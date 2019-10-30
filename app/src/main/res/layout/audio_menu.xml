@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+
+    <RelativeLayout
+        android:id="@+id/layertime"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="50dp"
+        android:background="#00000000"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/txttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center_vertical|center_horizontal"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:text="23:23:23"
+            android:textColor="@color/white"
+            android:textSize="85dp" />
+
+        <TextView
+            android:id="@+id/txttime1"
+            android:layout_width="wrap_content"
+            android:layout_height="85dp"
+            android:layout_alignParentTop="true"
+            android:background="#00000000"
+            android:gravity="center_vertical|center_horizontal"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="54dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/txtdete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txttime"
+            android:layout_marginTop="0dp"
+            android:background="#00000000"
+            android:gravity="center_vertical|left"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:text="2018/04/06"
+            android:textColor="@color/white"
+            android:textSize="37dp" />
+
+        <TextView
+            android:id="@+id/txtweek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/txttime"
+            android:layout_marginTop="0dp"
+            android:background="#00000000"
+            android:gravity="center_vertical|right"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:text="星期五"
+            android:textColor="@color/white"
+            android:textSize="37dp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layer2"
+        android:layout_width="178dp"
+        android:layout_height="82dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/layertime"
+        android:layout_marginRight="148dp"
+        android:layout_marginTop="165dp"
+        android:background="#00000000">
+
+        <RelativeLayout
+            android:id="@+id/autio_setting"
+            android:layout_width="178dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_setting_bar">
+
+            <SeekBar
+                android:id="@+id/seekbar_sys_audio_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/txt_sys_audio_level"
+                android:max="1000"
+                android:maxHeight="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:progressDrawable="@drawable/shape_seek_progress_bg"
+                android:thumb="@drawable/shape_seek_thumb"
+                android:thumbOffset="5dp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
